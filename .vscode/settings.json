@@ -1,0 +1,9 @@
+{
+    "python.analysis.extraPaths": [
+        ".",
+        "./modules"
+    ],
+    "python.defaultInterpreterPath": "/usr/bin/python3",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic"
+}
