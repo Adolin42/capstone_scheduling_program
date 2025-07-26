@@ -1,5 +1,4 @@
-from modules.employee import Employee
-from modules.shift import Shift
+from modules import Employee, Shift
 from datetime import date
 
 def test_shift_employee_integration():

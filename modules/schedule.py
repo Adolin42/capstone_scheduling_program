@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from shift import Shift
+# from .shift import Shift  # Import removed to avoid circular dependency
 # from .employee import Employee
 
 class Schedule:
