@@ -3,7 +3,7 @@
 ## Project Overview
 **Project Name**: Shift Scheduling Software  
 **Target Industries**: Restaurants, Hospitals, Factories (shift-based work environments)  
-**Technology Stack**: Python, Tkinter (GUI), Object-Oriented Design  
+**Technology Stack**: Python, Tkinter (GUI), PyInstaller, Object-Oriented Design  
 **Project Type**: Capstone Project  
 
 ---
@@ -11,12 +11,12 @@
 ## 1. Functional Requirements
 
 ### 1.1 Core Features (Must-Have)
-- [ ] Employee management (add, edit, remove employees)
-- [ ] Shift creation and management
-- [ ] Schedule generation and assignment
+- [x] Employee management (add, edit, remove employees)
+- [x] Shift creation and management
+- [x] Schedule generation and assignment
 - [ ] View/display schedules (weekly, monthly views)
-- [ ] Employee availability tracking
-- [ ] Basic conflict detection (double-booking prevention)
+- [x] Employee availability tracking
+- [x] Basic conflict detection (double-booking prevention)
 
 ### 1.2 Advanced Features (Should-Have)
 - [ ] Automatic schedule optimization
@@ -32,6 +32,7 @@
 - [ ] Reporting and analytics
 - [ ] Multi-location support
 - [ ] Integration with payroll systems
+- [ ] Customize schedule sizes and dates (change default Mon-Sun schedule)
 
 ---
 
@@ -57,9 +58,9 @@
 ## 3. Core Classes/Components (Object-Oriented Design)
 
 ### 3.1 Data Models
-- [ ] **Employee** class
-- [ ] **Shift** class  
-- [ ] **Schedule** class
+- [x] **Employee** class
+- [x] **Shift** class  
+- [x] **Schedule** class
 - [ ] **Availability** class
 - [ ] **BusinessRules** class
 
@@ -114,9 +115,9 @@
 ## 6. Development Phases
 
 ### Phase 1: Foundation
-- [ ] Basic class structure
-- [ ] Employee management
-- [ ] Simple shift creation
+- [x] Basic class structure
+- [x] Employee management
+- [x] Simple shift creation
 
 ### Phase 2: Core Functionality
 - [ ] Schedule generation
