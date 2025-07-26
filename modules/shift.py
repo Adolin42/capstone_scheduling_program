@@ -4,7 +4,7 @@ class Shift:
     # Class variable to track the next shift ID
     _next_id = 1000
     
-    def __init__(self, date, start_time, end_time, role_required, location="Main", min_staff=1, max_staff=1):
+    def __init__(self, date, start_time, end_time, roles_required, location="Main", min_staff=1, max_staff=1):
         """
         Initialize a new Shift
         
@@ -12,7 +12,7 @@ class Shift:
             date (date or str): The date of the shift (YYYY-MM-DD format if string)
             start_time (int): Start time in military format (e.g., 900 for 9:00 AM)
             end_time (int): End time in military format (e.g., 1700 for 5:00 PM)
-            role_required (str): Required role for this shift (e.g., "server", "cook", "manager")
+            roles_required (str): List of required roles for this shift (e.g., "server", "cook", "manager")
             location (str): Location/department (default "Main")
             min_staff (int): Minimum number of employees needed (default 1)
             max_staff (int): Maximum number of employees allowed (default 1)
@@ -32,7 +32,10 @@ class Shift:
         self.end_time = end_time
         
         # Shift requirements
-        self.role_required = role_required
+        if roles_required == None:
+            self.roles_required = []
+        else:
+            self.roles_required = roles_required
         self.location = location
         self.min_staff = min_staff
         self.max_staff = max_staff
@@ -52,26 +55,26 @@ class Shift:
             employee (Employee): Employee object to assign
             
         Returns:
-            bool: True if assignment successful, False if failed
+            bool: True if assignment successful, raise ValueError() otherwise
         """
         # Check if shift is already full
         if len(self.assigned_employees) >= self.max_staff:
-            return False
+            raise ValueError("Shift is already full")
             
         # Check if employee has the required role
-        if employee.role.lower() != self.role_required.lower():
+        if employee.role.lower() not in [role.lower() for role in self.roles_required]:
             # Allow managers to work any role
             if not employee.is_manager:
-                return False
+                raise ValueError("Employee's role does not match shift requirements")
         
         # Check if employee is available
         day_name = self.date.strftime("%A")  # Get day name (Monday, Tuesday, etc.)
         if not employee.is_available(day_name, self.start_time, self.end_time):
-            return False
+            raise ValueError("Employee is not available for chosen day/time")
             
         # Check if employee is already assigned to this shift
         if employee.id in self.assigned_employees:
-            return False
+            raise ValueError("Employee is already assigned to this shift")
             
         # Assign the employee
         self.assigned_employees.append(employee.id)
@@ -165,9 +168,9 @@ class Shift:
         status = "✓ Filled" if self.is_filled else f"Need {self.min_staff - len(self.assigned_employees)} more"
         
         return (f"Shift {self.id}: {self.get_day_name()} {self.date} "
-                f"{start_formatted}-{end_formatted} ({self.role_required}) - {status}")
+                f"{start_formatted}-{end_formatted} ({self.roles_required}) - {status}")
     
     def __repr__(self):
         """Developer-friendly representation"""
         return (f"Shift(id={self.id}, date='{self.date}', "
-                f"time={self.start_time}-{self.end_time}, role='{self.role_required}')")
+                f"time={self.start_time}-{self.end_time}, role='{self.roles_required}')")

@@ -82,51 +82,51 @@ def test_comprehensive_scheduling():
     print("\n3. Creating shifts for the week...")
     shifts_to_create = [
         # Monday
-        ("2025-01-20", 1100, 1500, "server"),    # Lunch server
-        ("2025-01-20", 1000, 1600, "cook"),     # Day cook
-        ("2025-01-20", 1700, 2200, "server"),   # Dinner server
-        ("2025-01-20", 1600, 2300, "cook"),     # Evening cook
-        ("2025-01-20", 900, 2100, "manager"),   # Manager
+        ("2025-01-20", 1100, 1500, ["server"]),    # Lunch server
+        ("2025-01-20", 1000, 1600, ["cook"]),     # Day cook
+        ("2025-01-20", 1700, 2200, ["server"]),   # Dinner server
+        ("2025-01-20", 1600, 2300, ["cook"]),     # Evening cook
+        ("2025-01-20", 900, 2100, ["manager"]),   # Manager
         
         # Tuesday  
-        ("2025-01-21", 1100, 1500, "server"),
-        ("2025-01-21", 1000, 1600, "cook"),
-        ("2025-01-21", 1700, 2200, "server"),
-        ("2025-01-21", 1600, 2300, "cook"),
-        ("2025-01-21", 900, 2100, "manager"),
+        ("2025-01-21", 1100, 1500, ["server"]),
+        ("2025-01-21", 1000, 1600, ["cook"]),
+        ("2025-01-21", 1700, 2200, ["server"]),
+        ("2025-01-21", 1600, 2300, ["cook"]),
+        ("2025-01-21", 900, 2100, ["manager"]),
         
         # Wednesday
-        ("2025-01-22", 1100, 1500, "server"),
-        ("2025-01-22", 1000, 1600, "cook"),
-        ("2025-01-22", 1700, 2200, "server"),
-        ("2025-01-22", 1600, 2300, "cook"),
-        ("2025-01-22", 900, 2100, "manager"),
+        ("2025-01-22", 1100, 1500, ["server"]),
+        ("2025-01-22", 1000, 1600, ["cook"]),
+        ("2025-01-22", 1700, 2200, ["server"]),
+        ("2025-01-22", 1600, 2300, ["cook"]),
+        ("2025-01-22", 900, 2100, ["manager"]),
         
         # Thursday (Busy night)
-        ("2025-01-23", 1700, 2200, "server"),
-        ("2025-01-23", 1000, 1600, "cook"),
-        ("2025-01-23", 1600, 2300, "cook"),
-        ("2025-01-23", 900, 2100, "manager"),
+        ("2025-01-23", 1700, 2200, ["server"]),
+        ("2025-01-23", 1000, 1600, ["cook"]),
+        ("2025-01-23", 1600, 2300, ["cook"]),
+        ("2025-01-23", 900, 2100, ["manager"]),
         
         # Friday (Very busy)
-        ("2025-01-24", 1100, 1500, "server"),   # Alice lunch
-        ("2025-01-24", 1000, 1600, "cook"),     # Charlie day
-        ("2025-01-24", 1700, 2200, "server"),   # Bob dinner
-        ("2025-01-24", 1800, 2100, "server"),   # Emma help
-        ("2025-01-24", 1600, 2300, "cook"),     # Diana evening
-        ("2025-01-24", 900, 2200, "manager"),   # Luigi
+        ("2025-01-24", 1100, 1500, ["server"]),   # Alice lunch
+        ("2025-01-24", 1000, 1600, ["cook"]),     # Charlie day
+        ("2025-01-24", 1700, 2200, ["server"]),   # Bob dinner
+        ("2025-01-24", 1800, 2100, ["server"]),   # Emma help
+        ("2025-01-24", 1600, 2300, ["cook"]),     # Diana evening
+        ("2025-01-24", 900, 2200, ["manager"]),   # Luigi
         
         # Saturday (Busiest day)
-        ("2025-01-25", 1100, 1600, "server"),   # Alice day
-        ("2025-01-25", 1700, 2200, "server"),   # Bob evening
-        ("2025-01-25", 1200, 2000, "server"),   # Emma long shift
-        ("2025-01-25", 1600, 2300, "cook"),     # Diana
-        ("2025-01-25", 1000, 2200, "manager"),  # Luigi
+        ("2025-01-25", 1100, 1600, ["server"]),   # Alice day
+        ("2025-01-25", 1700, 2200, ["server"]),   # Bob evening
+        ("2025-01-25", 1200, 2000, ["server"]),   # Emma long shift
+        ("2025-01-25", 1600, 2300, ["cook"]),     # Diana
+        ("2025-01-25", 1000, 2200, ["manager"]),  # Luigi
         
         # Sunday (Lighter day)
-        ("2025-01-26", 1200, 1900, "server"),   # Emma
-        ("2025-01-26", 1600, 2200, "cook"),     # Diana
-        ("2025-01-26", 1100, 2000, "manager"),  # Luigi
+        ("2025-01-26", 1200, 1900, ["server"]),   # Emma
+        ("2025-01-26", 1600, 2200, ["cook"]),     # Diana
+        ("2025-01-26", 1100, 2000, ["manager"]),  # Luigi
     ]
     
     created_shifts = []
@@ -176,7 +176,7 @@ def test_comprehensive_scheduling():
             shift = all_shifts[shift_index]
             try:
                 if shift.assign_employee(employee):
-                    print(f"  ✓ {employee.name} assigned to {shift.get_day_name()} {shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)} ({shift.role_required})")
+                    print(f"  ✓ {employee.name} assigned to {shift.get_day_name()} {shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)} ({shift.roles_required})")
                     successful_assignments += 1
                 else:
                     print(f"  ✗ Failed to assign {employee.name} to shift {shift_index}")
@@ -238,14 +238,14 @@ def test_comprehensive_scheduling():
             status = "✅" if shift.is_filled else "❌"
             
             print(f"    {status} {shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)} "
-                  f"({shift.role_required}): {assigned_str}")
+                  f"({shift.roles_required}): {assigned_str}")
     
     # Test error handling
     print("\n9. Testing error handling...")
     
     # Try to add invalid shift (outside date range)
     try:
-        invalid_shift = Shift("2025-01-30", 1000, 1800, "server")  # Outside week range
+        invalid_shift = Shift("2025-01-30", 1000, 1800, ["server"])  # Outside week range
         week_schedule.add_shift(invalid_shift)
         print("  ✗ Should have failed - shift outside date range")
     except ValueError as e:
@@ -253,7 +253,7 @@ def test_comprehensive_scheduling():
     
     # Try to assign unavailable employee
     try:
-        test_shift = Shift("2025-01-20", 2300, 2400, "server")  # Late night
+        test_shift = Shift("2025-01-20", 2300, 2400, ["server"])  # Late night
         test_shift.assign_employee(alice)  # Alice not available that late
         print("  ✗ Should have failed - employee not available")
     except:
