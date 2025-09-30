@@ -1,11 +1,11 @@
 """
 Shift Scheduling Software - Main GUI Application
-Author: Capstone Project
+Author: Ptolemy Linden
 Description: Professional scheduling software with Tkinter GUI
 """
 
-import tkinter as tk
-from tkinter import ttk, messagebox, simpledialog
+import tkinter as tk # basic Tkinter widgets (Label, Button, etc.)
+from tkinter import ttk, messagebox, simpledialog # themed widgets (sexy, sleek, modern widgets)
 from datetime import datetime, date, timedelta
 import json
 import os
@@ -17,8 +17,8 @@ from modules.schedule import Schedule
 
 class SchedulingApp:
     def __init__(self, root):
-        self.root = root
-        self.root.title("Luigi's Restaurant - Shift Scheduling Software")
+        self.root = root # Main window passed from main()
+        self.root.title("Luigi Mangione's Italian Restaurant - Shift Scheduling Software")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
@@ -58,7 +58,7 @@ class SchedulingApp:
         title_frame = ttk.Frame(self.root)
         title_frame.pack(fill='x', padx=10, pady=5)
         
-        ttk.Label(title_frame, text="🍝 Luigi's Restaurant - Shift Scheduling System", 
+        ttk.Label(title_frame, text="🍝 Luigi Mangione's Italian Restaurant - Shift Scheduling System", 
                  style='Title.TLabel').pack()
         
         # Create notebook for tabs
