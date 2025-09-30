@@ -1,5 +1,4 @@
 from modules import Employee, Shift, Schedule
-from datetime import date, timedelta
 
 def test_comprehensive_scheduling():
     """Comprehensive test of Employee, Shift, and Schedule classes working together"""
@@ -25,37 +24,37 @@ def test_comprehensive_scheduling():
     employees = []
     
     # Servers
-    alice = Employee("Alice Johnson", "555-0001", "alice@luigis.com", "server", 16.00)
-    alice.add_availability("Monday", 1000, 1800)     # 10 AM - 6 PM
-    alice.add_availability("Tuesday", 1000, 1800)
-    alice.add_availability("Wednesday", 1000, 1800)
-    alice.add_availability("Friday", 1700, 2200)     # Evening shift Friday
-    alice.add_availability("Saturday", 1000, 2200)   # Long Saturday
+    svb = Employee("Shane van Boening", "555-0001", "svb@luigis.com", "server", 16.00)
+    svb.add_availability("Monday", 1000, 1800)     # 10 AM - 6 PM
+    svb.add_availability("Tuesday", 1000, 1800)
+    svb.add_availability("Wednesday", 1000, 1800)
+    svb.add_availability("Friday", 1700, 2200)     # Evening shift Friday
+    svb.add_availability("Saturday", 1000, 2200)   # Long Saturday
     
-    bob = Employee("Bob Martinez", "555-0002", "bob@luigis.com", "server", 15.50)
-    bob.add_availability("Monday", 1700, 2300)       # Evening shifts
-    bob.add_availability("Tuesday", 1700, 2300)
-    bob.add_availability("Wednesday", 1700, 2300)
-    bob.add_availability("Thursday", 1700, 2300)
-    bob.add_availability("Friday", 1700, 2300)
-    bob.add_availability("Saturday", 1700, 2300)
+    fedor = Employee("Fedor Gorst", "555-0002", "fedor@luigis.com", "server", 15.50)
+    fedor.add_availability("Monday", 1700, 2300)       # Evening shifts
+    fedor.add_availability("Tuesday", 1700, 2300)
+    fedor.add_availability("Wednesday", 1700, 2300)
+    fedor.add_availability("Thursday", 1700, 2300)
+    fedor.add_availability("Friday", 1700, 2300)
+    fedor.add_availability("Saturday", 1700, 2300)
     
     # Cooks
-    charlie = Employee("Charlie Chen", "555-0003", "charlie@luigis.com", "cook", 18.50)
-    charlie.add_availability("Monday", 900, 1700)    # Day cook
-    charlie.add_availability("Tuesday", 900, 1700)
-    charlie.add_availability("Wednesday", 900, 1700)
-    charlie.add_availability("Thursday", 900, 1700)
-    charlie.add_availability("Friday", 900, 1700)
+    joshua = Employee("Joshua Filler", "555-0003", "joshua@luigis.com", "cook", 18.50)
+    joshua.add_availability("Monday", 900, 1700)    # Day cook
+    joshua.add_availability("Tuesday", 900, 1700)
+    joshua.add_availability("Wednesday", 900, 1700)
+    joshua.add_availability("Thursday", 900, 1700)
+    joshua.add_availability("Friday", 900, 1700)
     
-    diana = Employee("Diana Rodriguez", "555-0004", "diana@luigis.com", "cook", 19.00)
-    diana.add_availability("Monday", 1600, 2400)     # Evening cook
-    diana.add_availability("Tuesday", 1600, 2400)
-    diana.add_availability("Wednesday", 1600, 2400)
-    diana.add_availability("Thursday", 1600, 2400)
-    diana.add_availability("Friday", 1600, 2400)
-    diana.add_availability("Saturday", 1600, 2400)
-    diana.add_availability("Sunday", 1600, 2300)
+    carlo = Employee("Carlo Biado", "555-0004", "carlo@luigis.com", "cook", 19.00)
+    carlo.add_availability("Monday", 1600, 2400)     # Evening cook
+    carlo.add_availability("Tuesday", 1600, 2400)
+    carlo.add_availability("Wednesday", 1600, 2400)
+    carlo.add_availability("Thursday", 1600, 2400)
+    carlo.add_availability("Friday", 1600, 2400)
+    carlo.add_availability("Saturday", 1600, 2400)
+    carlo.add_availability("Sunday", 1600, 2300)
     
     # Manager
     luigi = Employee("Luigi Mangione", "555-0005", "luigi@luigis.com", "manager", 25.00)
@@ -68,12 +67,12 @@ def test_comprehensive_scheduling():
     luigi.add_availability("Sunday", 1000, 2100)
     
     # Part-time weekend server
-    emma = Employee("Emma Wilson", "555-0006", "emma@luigis.com", "server", 14.50, max_hours=20, is_minor=True)
-    emma.add_availability("Friday", 1800, 2100)      # Limited minor hours
-    emma.add_availability("Saturday", 1100, 2100)
-    emma.add_availability("Sunday", 1100, 2000)
+    jayson = Employee("Jayson Shaw", "555-0006", "jayson@luigis.com", "server", 14.50, max_hours=20, is_minor=True)
+    jayson.add_availability("Friday", 1800, 2100)      # Limited minor hours
+    jayson.add_availability("Saturday", 1100, 2100)
+    jayson.add_availability("Sunday", 1100, 2000)
     
-    employees = [alice, bob, charlie, diana, luigi, emma]
+    employees = [svb, fedor, joshua, carlo, luigi, jayson]
     
     for emp in employees:
         print(f"  ✓ Hired: {emp}")
@@ -109,23 +108,23 @@ def test_comprehensive_scheduling():
         ("2025-01-23", 900, 2100, ["manager"]),
         
         # Friday (Very busy)
-        ("2025-01-24", 1100, 1500, ["server"]),   # Alice lunch
-        ("2025-01-24", 1000, 1600, ["cook"]),     # Charlie day
-        ("2025-01-24", 1700, 2200, ["server"]),   # Bob dinner
-        ("2025-01-24", 1800, 2100, ["server"]),   # Emma help
-        ("2025-01-24", 1600, 2300, ["cook"]),     # Diana evening
+        ("2025-01-24", 1100, 1500, ["server"]),   # svb lunch
+        ("2025-01-24", 1000, 1600, ["cook"]),     # joshua day
+        ("2025-01-24", 1700, 2200, ["server"]),   # fedor dinner
+        ("2025-01-24", 1800, 2100, ["server"]),   # jayson help
+        ("2025-01-24", 1600, 2300, ["cook"]),     # carlo evening
         ("2025-01-24", 900, 2200, ["manager"]),   # Luigi
         
         # Saturday (Busiest day)
-        ("2025-01-25", 1100, 1600, ["server"]),   # Alice day
-        ("2025-01-25", 1700, 2200, ["server"]),   # Bob evening
-        ("2025-01-25", 1200, 2000, ["server"]),   # Emma long shift
-        ("2025-01-25", 1600, 2300, ["cook"]),     # Diana
+        ("2025-01-25", 1100, 1600, ["server"]),   # svb day
+        ("2025-01-25", 1700, 2200, ["server"]),   # fedor evening
+        ("2025-01-25", 1200, 2000, ["server"]),   # jayson long shift
+        ("2025-01-25", 1600, 2300, ["cook"]),     # carlo
         ("2025-01-25", 1000, 2200, ["manager"]),  # Luigi
         
         # Sunday (Lighter day)
-        ("2025-01-26", 1200, 1900, ["server"]),   # Emma
-        ("2025-01-26", 1600, 2200, ["cook"]),     # Diana
+        ("2025-01-26", 1200, 1900, ["server"]),   # jayson
+        ("2025-01-26", 1600, 2200, ["cook"]),     # carlo
         ("2025-01-26", 1100, 2000, ["manager"]),  # Luigi
     ]
     
@@ -151,19 +150,19 @@ def test_comprehensive_scheduling():
     print("\n5. Assigning employees to shifts...")
     assignment_attempts = [
         # Monday
-        (0, alice), (1, charlie), (2, bob), (3, diana), (4, luigi),
+        (0, svb), (1, joshua), (2, fedor), (3, carlo), (4, luigi),
         # Tuesday  
-        (5, alice), (6, charlie), (7, bob), (8, diana), (9, luigi),
+        (5, svb), (6, joshua), (7, fedor), (8, carlo), (9, luigi),
         # Wednesday
-        (10, alice), (11, charlie), (12, bob), (13, diana), (14, luigi),
+        (10, svb), (11, joshua), (12, fedor), (13, carlo), (14, luigi),
         # Thursday
-        (15, bob), (16, charlie), (17, diana), (18, luigi),
+        (15, fedor), (16, joshua), (17, carlo), (18, luigi),
         # Friday
-        (19, alice), (20, charlie), (21, bob), (22, emma), (23, diana), (24, luigi),
+        (19, svb), (20, joshua), (21, fedor), (22, jayson), (23, carlo), (24, luigi),
         # Saturday
-        (25, alice), (26, bob), (27, emma), (28, diana), (29, luigi),
+        (25, svb), (26, fedor), (27, jayson), (28, carlo), (29, luigi),
         # Sunday
-        (30, emma), (31, diana), (32, luigi),
+        (30, jayson), (31, carlo), (32, luigi),
     ]
     
     successful_assignments = 0
@@ -199,10 +198,10 @@ def test_comprehensive_scheduling():
     print(f"  Monday shifts: {len(monday_shifts)}")
     
     # Get shifts by employee
-    alice_shifts = week_schedule.get_shifts_by_employee(alice.id)
-    bob_shifts = week_schedule.get_shifts_by_employee(bob.id)
-    print(f"  Alice's shifts this week: {len(alice_shifts)}")
-    print(f"  Bob's shifts this week: {len(bob_shifts)}")
+    svb_shifts = week_schedule.get_shifts_by_employee(svb.id)
+    fedor_shifts = week_schedule.get_shifts_by_employee(fedor.id)
+    print(f"  svb's shifts this week: {len(svb_shifts)}")
+    print(f"  fedor's shifts this week: {len(fedor_shifts)}")
     
     # Calculate total hours for each employee
     print("\n7. Weekly hours analysis...")
@@ -254,7 +253,7 @@ def test_comprehensive_scheduling():
     # Try to assign unavailable employee
     try:
         test_shift = Shift("2025-01-20", 2300, 2400, ["server"])  # Late night
-        test_shift.assign_employee(alice)  # Alice not available that late
+        test_shift.assign_employee(svb)  # svb not available that late
         print("  ✗ Should have failed - employee not available")
     except:
         print("  ✅ Correctly rejected unavailable employee assignment")
