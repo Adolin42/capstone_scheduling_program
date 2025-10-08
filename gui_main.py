@@ -537,12 +537,12 @@ class SchedulingApp:
         """Load sample data for demonstration"""
         # Create sample employees
         sample_employees = [
-            ("Shane van Boening", "555-0001", "alice@luigis.com", "server", 16.00, 40, False),
-            ("Jayson Shaw", "555-0002", "bob@luigis.com", "server", 15.50, 40, False),
-            ("Magnus Carlsen", "555-0003", "charlie@luigis.com", "cook", 18.50, 40, False),
-            ("Anatoly Karpov", "555-0004", "diana@luigis.com", "cook", 19.00, 40, False),
-            ("Luigi Mangione", "555-0005", "luigi@luigis.com", "manager", 25.00, 50, False),
-            ("Chad Thunderstud", "555-0006", "emma@luigis.com", "server", 14.50, 20, True),
+            ("Shane van Boening", "555-0001", "svb@luigis.com", "server", 16.00, 40, False),
+            ("Jayson Shaw", "555-0002", "jshaw@luigis.com", "server", 15.50, 40, False),
+            ("Magnus Carlsen", "555-0003", "mcarlsen@luigis.com", "cook", 18.50, 40, False),
+            ("Anatoly Karpov", "555-0004", "akarpov@luigis.com", "cook", 19.00, 40, False),
+            ("Luigi Mangione", "555-0005", "lmangione@luigis.com", "manager", 25.00, 50, False),
+            ("Chad Thunderstud", "555-0006", "cthunderstud@luigis.com", "server", 14.50, 20, True),
         ]
         
         for emp_data in sample_employees:
