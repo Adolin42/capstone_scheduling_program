@@ -71,6 +71,45 @@ class Employee:
                 return True
         return False
     
+    def to_dict(self):
+        """Convert employee to dictionary for JSON serializaiton"""
+        return {
+            'id': self.id,
+            'name': self.name,
+            'phone_number': self.phone_number,
+            'email': self.email,
+            'role': self.role,
+            'wage': self.wage,
+            'max_hours': self.max_hours,
+            'min_hours': self.min_hours,
+            'is_minor': self.is_minor,
+            'is_manager': self.is_manager,
+            'is_admin': self.is_admin,
+            'available_days_times': self.available_days_times
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Create employee from dictionary (JSON deserialization)"""
+        # cls is the Employee class
+        # This is equivalent to calling Employee(...) but more flexible
+        employee = cls(
+            name=data['name'],
+            phone_number=data['phone_number'],
+            email=data['email'],
+            role=data['role'],
+            wage=data['wage'],
+            max_hours=data.get('max_hours', 40),
+            min_hours=data.get('min_hours', 0),
+            is_minor=data.get('is_minor', False)
+        )
+    
+        # Override the auto-generated ID with the saved one
+        employee.id = data['id']
+        employee.available_days_times = data.get('available_days_times', [])
+    
+        return employee
+    
     def __str__(self):
         """String representation of the employee"""
         return f"Employee {self.id}: {self.name} ({self.role}) - ${self.wage}/hr"
