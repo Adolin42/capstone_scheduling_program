@@ -1,5 +1,5 @@
 """
-Shift Scheduling Software - Main GUI Application
+Chronos - Main GUI Application
 Author: Ptolemy Linden
 Description: Professional scheduling software with Tkinter GUI
 """
@@ -18,7 +18,7 @@ from modules.schedule import Schedule
 class SchedulingApp:
     def __init__(self, root):
         self.root = root # Main window passed from main()
-        self.root.title("Luigi Mangione's Italian Restaurant - Shift Scheduling Software")
+        self.root.title("Luigi Mangione's Italian Restaurant - Chronos")
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
@@ -58,7 +58,7 @@ class SchedulingApp:
         title_frame = ttk.Frame(self.root)
         title_frame.pack(fill='x', padx=10, pady=5)
         
-        ttk.Label(title_frame, text="🍝 Luigi Mangione's Italian Restaurant - Shift Scheduling System", 
+        ttk.Label(title_frame, text="🍝 Luigi Mangione's Italian Restaurant - Chronos", 
                  style='Title.TLabel').pack()
         
         # Create notebook for tabs
