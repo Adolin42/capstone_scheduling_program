@@ -161,6 +161,44 @@ class Shift:
         else:
             return f"{hours-12}:{minutes:02d} PM"
     
+    def to_dict(self):
+        """Convert shift to dictionary for JSON serialization"""
+        return {
+            'id': self.id,
+            'date': self.date.isoformat(),  # Convert date to string "YYYY-MM-DD"
+            'start_time': self.start_time,
+            'end_time': self.end_time,
+            'roles_required': self.roles_required,
+            'location': self.location,
+            'min_staff': self.min_staff,
+            'max_staff': self.max_staff,
+            'assigned_employees': self.assigned_employees,
+            'is_filled': self.is_filled,
+            'is_published': self.is_published
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Create shift from dictionary (JSON deserialization)"""
+        # Create shift with basic info
+        shift = cls(
+            date=data['date'],  # Will be converted to date object by __init__
+            start_time=data['start_time'],
+            end_time=data['end_time'],
+            roles_required=data['roles_required'],
+            location=data.get('location', 'Main'),
+            min_staff=data.get('min_staff', 1),
+            max_staff=data.get('max_staff', 1)
+        )
+        
+        # Restore the original ID and assignments
+        shift.id = data['id']
+        shift.assigned_employees = data.get('assigned_employees', [])
+        shift.is_filled = data.get('is_filled', False)
+        shift.is_published = data.get('is_published', False)
+        
+        return shift
+    
     def __str__(self):
         """String representation of the shift"""
         start_formatted = self.format_time(self.start_time)

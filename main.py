@@ -22,6 +22,9 @@ class SchedulingApp:
         self.root.geometry("1200x800")
         self.root.minsize(1000, 600)
         
+        # Set up auto-save on window close
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        
         # Configure style
         self.setup_styles()
         
@@ -30,11 +33,11 @@ class SchedulingApp:
         self.schedules = []
         self.current_schedule = None
         
-        # Load data if exists
-        self.load_data()
-        
-        # Create GUI
+        # Create GUI first (before loading data)
         self.setup_gui()
+        
+        # Load data if exists (now GUI is ready)
+        self.load_data()
         
         # Load sample data if no data exists
         if not self.employees:
@@ -526,6 +529,10 @@ class SchedulingApp:
 
     def add_activity(self, activity):
         """Add activity to recent activity list"""
+        # Check if GUI is ready
+        if not hasattr(self, 'activity_listbox'):
+            return
+        
         timestamp = datetime.now().strftime("%H:%M:%S")
         self.activity_listbox.insert(0, f"[{timestamp}] {activity}")
         
@@ -562,13 +569,115 @@ class SchedulingApp:
 
     def save_data(self):
         """Save data to JSON file"""
-        # This is a placeholder - implement actual JSON serialization
-        pass
+        try:
+            # Create data directory if it doesn't exist
+            if not os.path.exists('data'):
+                os.makedirs('data')
+            
+            data_file = 'data/scheduling_data.json'
+            
+            # Create backup if file exists
+            if os.path.exists(data_file):
+                backup_file = 'data/scheduling_data.backup.json'
+                try:
+                    import shutil
+                    shutil.copy2(data_file, backup_file)
+                except Exception as e:
+                    print(f"Warning: Could not create backup: {e}")
+            
+            # Prepare data for saving
+            data_to_save = {
+                'employees': [emp.to_dict() for emp in self.employees],
+                'schedules': [sched.to_dict() for sched in self.schedules],
+                'metadata': {
+                    'version': '1.0',
+                    'last_saved': datetime.now().isoformat(),
+                    'employee_count': len(self.employees),
+                    'schedule_count': len(self.schedules),
+                    'next_employee_id': Employee._next_id,
+                    'next_shift_id': Shift._next_id,
+                    'next_schedule_id': Schedule._next_id
+                }
+            }
+            
+            # Save to JSON file
+            with open(data_file, 'w') as file:
+                json.dump(data_to_save, file, indent=2)
+            
+            self.add_activity(f"Data saved successfully ({len(self.employees)} employees, {len(self.schedules)} schedules)")
+            return True
+            
+        except Exception as e:
+            messagebox.showerror("Save Error", f"Failed to save data: {str(e)}")
+            self.add_activity(f"Save failed: {str(e)}")
+            return False
 
     def load_data(self):
         """Load data from JSON file"""
-        # This is a placeholder - implement actual JSON deserialization
-        pass
+        try:
+            data_file = 'data/scheduling_data.json'
+            
+            # Check if data file exists
+            if not os.path.exists(data_file):
+                self.add_activity("No saved data found - starting fresh")
+                return False
+            
+            # Load JSON data
+            with open(data_file, 'r') as file:
+                loaded_data = json.load(file)
+            
+            # Restore employees
+            self.employees = [Employee.from_dict(emp_data) for emp_data in loaded_data.get('employees', [])]
+            
+            # Restore schedules
+            self.schedules = [Schedule.from_dict(sched_data) for sched_data in loaded_data.get('schedules', [])]
+            
+            # Restore class ID counters to avoid conflicts
+            metadata = loaded_data.get('metadata', {})
+            if 'next_employee_id' in metadata:
+                Employee._next_id = metadata['next_employee_id']
+            if 'next_shift_id' in metadata:
+                Shift._next_id = metadata['next_shift_id']
+            if 'next_schedule_id' in metadata:
+                Schedule._next_id = metadata['next_schedule_id']
+            
+            # Update UI
+            self.refresh_employee_list()
+            self.refresh_schedule_combo()
+            self.update_stats()
+            
+            # Set current schedule if available
+            if self.schedules:
+                self.current_schedule = self.schedules[0]
+                self.refresh_schedule_view()
+            
+            self.add_activity(f"Data loaded: {len(self.employees)} employees, {len(self.schedules)} schedules")
+            return True
+            
+        except json.JSONDecodeError as e:
+            messagebox.showerror("Load Error", f"Data file is corrupted: {str(e)}\n\nTry restoring from backup.")
+            self.add_activity(f"Load failed: Corrupted data file")
+            return False
+        except Exception as e:
+            messagebox.showerror("Load Error", f"Failed to load data: {str(e)}")
+            self.add_activity(f"Load failed: {str(e)}")
+            return False
+    
+    def on_closing(self):
+        """Handle application closing - auto-save data"""
+        try:
+            # Save data before closing
+            if self.employees or self.schedules:
+                if messagebox.askyesno("Save Before Exit", "Do you want to save your data before exiting?"):
+                    self.save_data()
+            
+            # Destroy the window
+            self.root.destroy()
+            
+        except Exception as e:
+            # If save fails, ask if user still wants to exit
+            if messagebox.askyesno("Error", f"Failed to save: {str(e)}\n\nExit anyway?"):
+                self.root.destroy()
 
     # Additional methods for shift management, employee assignment, etc.
     def edit_selected_shift(self):

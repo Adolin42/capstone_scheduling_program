@@ -105,3 +105,33 @@ class Schedule:
                 if shift1.conflicts_with(shift2):
                     return True
         return False
+    
+    def to_dict(self):
+        """Convert schedule to dictionary for JSON serialization"""
+        return {
+            'id': self.id,
+            'start_date': self.start_date.isoformat(),  # Convert date to string
+            'end_date': self.end_date.isoformat(),      # Convert date to string
+            'shifts': [shift.to_dict() for shift in self.shifts]  # Recursively convert shifts
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Create schedule from dictionary (JSON deserialization)"""
+        # Create schedule without shifts first
+        schedule = cls(
+            start_date=data['start_date'],
+            end_date=data['end_date'],
+            shifts=None
+        )
+        
+        # Restore the original ID
+        schedule.id = data['id']
+        
+        # Import Shift here to avoid circular dependency
+        from .shift import Shift
+        
+        # Recursively recreate shift objects
+        schedule.shifts = [Shift.from_dict(shift_data) for shift_data in data.get('shifts', [])]
+        
+        return schedule

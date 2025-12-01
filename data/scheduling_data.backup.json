@@ -1,0 +1,91 @@
+{
+  "employees": [
+    {
+      "id": 10000,
+      "name": "Test Employee 1",
+      "phone_number": "555-0001",
+      "email": "test1@email.com",
+      "role": "server",
+      "wage": 16.0,
+      "max_hours": 40,
+      "min_hours": 0,
+      "is_minor": false,
+      "is_manager": false,
+      "is_admin": false,
+      "available_days_times": [
+        [
+          "Monday",
+          900,
+          1700
+        ]
+      ]
+    },
+    {
+      "id": 10001,
+      "name": "Test Employee 2",
+      "phone_number": "555-0002",
+      "email": "test2@email.com",
+      "role": "cook",
+      "wage": 18.5,
+      "max_hours": 40,
+      "min_hours": 0,
+      "is_minor": false,
+      "is_manager": false,
+      "is_admin": false,
+      "available_days_times": [
+        [
+          "Tuesday",
+          1000,
+          1800
+        ]
+      ]
+    },
+    {
+      "id": 10002,
+      "name": "Test Employee 3",
+      "phone_number": "555-1030",
+      "email": "test3@luigis.com",
+      "role": "manager",
+      "wage": 20.0,
+      "max_hours": 40,
+      "min_hours": 0,
+      "is_minor": false,
+      "is_manager": true,
+      "is_admin": false,
+      "available_days_times": []
+    }
+  ],
+  "schedules": [
+    {
+      "id": 1002,
+      "start_date": "2025-12-01",
+      "end_date": "2025-12-07",
+      "shifts": [
+        {
+          "id": 1003,
+          "date": "2025-12-01",
+          "start_time": 900,
+          "end_time": 1700,
+          "roles_required": [
+            "server"
+          ],
+          "location": "Main",
+          "min_staff": 1,
+          "max_staff": 1,
+          "assigned_employees": [],
+          "is_filled": false,
+          "is_published": false
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "last_saved": "2025-12-01T02:08:19.362726",
+    "employee_count": 3,
+    "schedule_count": 1,
+    "next_employee_id": 10003,
+    "next_shift_id": 1004,
+    "next_schedule_id": 1003
+  }
+}
