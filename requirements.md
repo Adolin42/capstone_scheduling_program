@@ -14,7 +14,7 @@
 - [x] Employee management (add, edit, remove employees)
 - [x] Shift creation and management
 - [x] Schedule generation and assignment
-- [ ] View/display schedules (weekly, monthly views)
+- [x] View/display schedules (weekly, monthly views)
 - [x] Employee availability tracking
 - [x] Basic conflict detection (double-booking prevention)
 
@@ -120,9 +120,9 @@
 - [x] Simple shift creation
 
 ### Phase 2: Core Functionality
-- [ ] Schedule generation
-- [ ] Basic GUI with Tkinter
-- [ ] Conflict detection
+- [x] Schedule generation
+- [x] Basic GUI with Tkinter
+- [x] Conflict detection
 
 ### Phase 3: Advanced Features
 - [ ] Schedule optimization
@@ -130,19 +130,19 @@
 - [ ] Enhanced user interface
 
 ### Phase 4: Polish & Testing
-- [ ] Error handling
-- [ ] User testing
-- [ ] Documentation
+- [x] Error handling
+- [x] User testing
+- [x] Documentation
 - [ ] Final presentation preparation
 
 ---
 
 ## 7. Success Criteria
-- [ ] Successfully create and manage employee schedules
-- [ ] Demonstrate object-oriented programming principles
-- [ ] Functional GUI using Tkinter
-- [ ] Proper version control with Git/GitHub
-- [ ] Comprehensive documentation
+- [x] Successfully create and manage employee schedules
+- [x] Demonstrate object-oriented programming principles
+- [x] Functional GUI using Tkinter
+- [x] Proper version control with Git/GitHub
+- [x] Comprehensive documentation
 - [ ] Professional presentation of final product
 
 ---

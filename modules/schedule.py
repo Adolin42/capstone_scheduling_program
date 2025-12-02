@@ -106,6 +106,25 @@ class Schedule:
                     return True
         return False
     
+    def calculate_payroll(self, employees_list):
+        """
+        Calculate total payroll cost for entire schedule
+
+        Args:
+            employees_list: List of all Employee objects
+        
+        Returns:
+            float: Total payroll cost for all shifts
+        """
+
+        total_cost = 0.0
+
+        for shift in self.shifts:
+            shift_cost = shift.calculate_payroll(employees_list)
+            total_cost += shift_cost
+        
+        return total_cost
+    
     def to_dict(self):
         """Convert schedule to dictionary for JSON serialization"""
         return {

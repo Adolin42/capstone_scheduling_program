@@ -160,6 +160,30 @@ class Shift:
             return f"12:{minutes:02d} PM"
         else:
             return f"{hours-12}:{minutes:02d} PM"
+        
+    def calculate_payroll(self, employees_list):
+        """
+        Calculate total payroll cost for this shift
+
+        Args: employees_list: List of all Employee objects (to look up wages)
+
+        Returns:
+            float: Total cost for this shift
+        """
+        total_cost = 0.0
+        shift_duration = self.get_duration_hours()
+
+        # Loop through assigned employee IDs
+        for emp_id in self.assigned_employees:
+            # Find the employee object
+            employee = next((emp for emp in employees_list if emp.id == emp_id), None)
+
+            if employee:
+                # Cost = wage per hour x hours worked
+                shift_cost = employee.wage * shift_duration
+                total_cost += shift_cost
+        
+        return total_cost
     
     def to_dict(self):
         """Convert shift to dictionary for JSON serialization"""

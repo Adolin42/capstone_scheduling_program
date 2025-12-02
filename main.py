@@ -198,6 +198,15 @@ class SchedulingApp:
         ttk.Button(selection_frame, text="🗑️ Delete Schedule", 
                   command=self.delete_current_schedule).pack(side='left', padx=5)
         
+        # Schedule cost frame
+        cost_frame = ttk.LabelFrame(schedule_frame, text="Payroll Summary", padding=10)
+        cost_frame.pack(fill='x', padx=10, pady=5)
+
+        self.schedule_total_cost = tk.StringVar(value="$0.00")
+        ttk.Label(cost_frame, text="Total Schedule Payroll:").pack(side='left', padx=5)
+        ttk.Label(cost_frame, textvariable=self.schedule_total_cost,
+                  style='Heading.TLabel', foreground='green').pack(side='left', padx=5)
+        
         # Schedule view frame
         view_frame = ttk.LabelFrame(schedule_frame, text="Weekly Schedule View", padding=10)
         view_frame.pack(fill='both', expand=True, padx=10, pady=5)
@@ -224,7 +233,7 @@ class SchedulingApp:
         shifts_frame.pack(fill='both', expand=True, padx=5, pady=5)
         
         # Shifts treeview for this day
-        columns = ('Time', 'Role', 'Assigned', 'Status')
+        columns = ('Time', 'Role', 'Assigned', 'Status', 'Cost')
         day_tree = ttk.Treeview(shifts_frame, columns=columns, show='headings', height=10)
         
         for col in columns:
@@ -249,7 +258,7 @@ class SchedulingApp:
         tree_frame = ttk.Frame(shift_list_frame)
         tree_frame.pack(fill='both', expand=True)
         
-        columns = ('ID', 'Date', 'Day', 'Time', 'Role', 'Assigned', 'Status')
+        columns = ('ID', 'Date', 'Day', 'Time', 'Role', 'Assigned', 'Status', 'Cost')
         self.shifts_tree = ttk.Treeview(tree_frame, columns=columns, show='headings', height=15)
         
         for col in columns:
@@ -470,7 +479,12 @@ class SchedulingApp:
             self.current_schedule_var.set(f"Current: {current_name}")
 
     def refresh_schedule_view(self):
-        """Refresh the weekly schedule view"""
+        """
+        Refreshes the weekly schedule view whenever:
+        - A schedule is loaded
+        - A shift is added or removed
+        - An employee is assigned to a shift
+        """
         if not self.current_schedule:
             return
         
@@ -496,12 +510,64 @@ class SchedulingApp:
             status = "✅ Filled" if shift.is_filled else "❌ Need Staff"
             
             time_str = f"{shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)}"
+
+            # Calculate shift cost
+            shift_cost = shift.calculate_payroll(self.employees)
+            cost_str = f"${shift_cost:.2f}" # Format as $XX.XX
             
             day_tree.insert('', 'end', values=(
                 time_str,
                 shift.roles_required[0] if shift.roles_required else "Any",
                 assigned_str,
-                status
+                status,
+                cost_str
+            ))
+
+            # Calculate and update total payroll
+            if self.current_schedule:
+                total_cost = self.current_schedule.calculate_payroll(self.employees)
+                self.schedule_total_cost.set(f"${total_cost:.2f}")
+            else:
+                self.schedule_total_cost.set("$0.00")
+
+    def refresh_shifts_tab(self):
+        """Refresh the shifts tab with all shifts from all schedules"""
+        # Clear existing items
+        for item in self.shifts_tree.get_children():
+            self.shifts_tree.delete(item)
+
+        # Loop through all schedules
+        for schedule in self.schedules:
+            # Loop through all shifts in each schedule
+            for shift in schedule.get_all_shifts():
+                # Get assigned employee names
+                assigned_names = []
+                for emp_id in shift.assigned_employees:
+                    emp = next((e for e in self.employees if e.id == emp_id), None)
+                    if emp:
+                        assigned_names.append(emp.name)
+            
+            assigned_str = ", ".join(assigned_names) if assigned_names else "UNASSIGNED"
+            status = "✅ Filled" if shift.is_filled else "❌ Unfilled"
+
+            # Format time
+            time_str = f"{shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)}"
+
+            # Calculate cost
+            shift_cost = shift.calculate_payroll(self.employees)
+            cost_str = f"${shift_cost:.2f}"
+
+            # Insert into treeview
+
+            self.shifts_tree.insert('', 'end', values=(
+                shift.id,
+                shift.date,
+                shift.get_day_name(),
+                time_str,
+                shift.roles_required[0] if shift.roles_required else "Any",
+                assigned_str,
+                status,
+                cost_str
             ))
 
     def on_schedule_selected(self, event=None):
