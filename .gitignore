@@ -61,3 +61,7 @@ desktop.ini
 *.tmp
 temp/
 tmp/
+
+# Image files
+*.png
+*.jpeg 
