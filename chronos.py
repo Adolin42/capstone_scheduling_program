@@ -282,7 +282,7 @@ class SchedulingApp:
                   command=self.edit_selected_shift).pack(side='left', padx=5)
         ttk.Button(shift_actions_frame, text="👤 Assign Employee", 
                   command=self.assign_employee_to_shift).pack(side='left', padx=5)
-        ttk.Button(shift_actions_frame, text="🗑️ Delete Shift", 
+        ttk.Button(shift_actions_frame, text="🗑️Delete Shift", 
                   command=self.delete_selected_shift).pack(side='left', padx=5)
 
     def create_status_bar(self):
@@ -546,29 +546,28 @@ class SchedulingApp:
                     emp = next((e for e in self.employees if e.id == emp_id), None)
                     if emp:
                         assigned_names.append(emp.name)
-            
-            assigned_str = ", ".join(assigned_names) if assigned_names else "UNASSIGNED"
-            status = "✅ Filled" if shift.is_filled else "❌ Unfilled"
+                
+                assigned_str = ", ".join(assigned_names) if assigned_names else "UNASSIGNED"
+                status = "✅ Filled" if shift.is_filled else "❌ Unfilled"
 
-            # Format time
-            time_str = f"{shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)}"
+                # Format time
+                time_str = f"{shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)}"
 
-            # Calculate cost
-            shift_cost = shift.calculate_payroll(self.employees)
-            cost_str = f"${shift_cost:.2f}"
+                # Calculate cost
+                shift_cost = shift.calculate_payroll(self.employees)
+                cost_str = f"${shift_cost:.2f}"
 
-            # Insert into treeview
-
-            self.shifts_tree.insert('', 'end', values=(
-                shift.id,
-                shift.date,
-                shift.get_day_name(),
-                time_str,
-                shift.roles_required[0] if shift.roles_required else "Any",
-                assigned_str,
-                status,
-                cost_str
-            ))
+                # Insert into treeview
+                self.shifts_tree.insert('', 'end', values=(
+                    shift.id,
+                    shift.date,
+                    shift.get_day_name(),
+                    time_str,
+                    shift.roles_required[0] if shift.roles_required else "Any",
+                    assigned_str,
+                    status,
+                    cost_str
+                ))
 
     def on_schedule_selected(self, event=None):
         """Handle schedule selection change"""
@@ -611,11 +610,11 @@ class SchedulingApp:
         # Create sample employees
         sample_employees = [
             ("Luigi Mangione", "555-0001", "lmangione@luigis.com", "manager", 35.00, 50, False),
-            ("Brian Thompson", "555-0002", "bthompson@unitedhealthcare.org", "server", 7.00, 40, False),
+            ("Brian Thompson", "555-0002", "bthompson@unitedhealthcare.org", "server", 7.25, 40, False),
             ("Shane van Boening", "555-0003", "@luigis.com", "server", 15.50, 40, False),
             ("Dalinar Kholin", "555-0004", "dkholin@luigis.com", "cook", 22.00, 40, False),
             ("Ciaphas Cain", "555-0005", "ccain@luigis.com", "cook", 20.50, 40, False),
-            ("Waxillim Ladrian", "555-0006", "wladrian@luigis.com", "server", 30, 35, False),
+            ("Waxillium Ladrian", "555-0006", "wladrian@luigis.com", "server", 30, 35, False),
             ("Ellen Ripley", "555-0007", "eripley@luigis.com", "host", 16.50, 30, False),
             ("Chad Thunderstud", "555-0008", "cthunderstud@luigis.com", "assistant manager", 28.00, 45, False),
         ]
