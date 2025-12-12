@@ -110,7 +110,9 @@ When you first run Chronos, sample data will be automatically loaded to demonstr
 
 ### Assigning Employees
 
-Currently, employees must be assigned to shifts programmatically or through the test scripts. A GUI-based assignment feature is planned for future releases.
+1. Select a shift in the **Shift** tab
+2. Click **Assign Employee**
+3. Select the employee you wish to assign to the shift
 
 **Automatic Validation:**
 - Employee must be available during shift hours
