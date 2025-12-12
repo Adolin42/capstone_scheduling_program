@@ -20,7 +20,7 @@ A professional shift scheduling application designed for restaurants and other s
 
 ### Shift Management
 - Create shifts with specific dates, times, and role requirements
-- Assign employees to shifts with automatic validation
+- Assign employees to shifts with automatic validation..
 - Conflict detection (availability checking, role matching)
 - View all shifts across all schedules in one place
 - Track shift fill status (filled/unfilled)
@@ -46,13 +46,13 @@ A professional shift scheduling application designed for restaurants and other s
 - Color-coded status indicators
 - Professional styling with ttk widgets
 
-## 📋 Requirements
+## Requirements
 
 - Python 3.7 or higher
 - tkinter (usually included with Python)
 - No additional dependencies required!
 
-## 🚀 Installation
+## Installation
 
 1. Clone or download this repository:
 ```bash
@@ -70,7 +70,7 @@ python --version
 python chronos.py
 ```
 
-## 💡 Usage
+## Usage
 
 ### Getting Started
 
@@ -78,8 +78,8 @@ When you first run Chronos, sample data will be automatically loaded to demonstr
 
 ### Managing Employees
 
-1. Navigate to the **👥 Employees** tab
-2. Click **➕ Add Employee** to create new employee profiles
+1. Navigate to the **Employees** tab
+2. Click **Add Employee** to create new employee profiles
 3. Fill in employee details:
    - Name, phone, email
    - Role (server, cook, host, manager, etc.)
@@ -87,20 +87,20 @@ When you first run Chronos, sample data will be automatically loaded to demonstr
    - Maximum hours per week
    - Minor status (under 18)
 4. Edit or delete employees using the action buttons
-5. Click **👁️ View Details** to see full employee information including availability
+5. Click **View Details** to see full employee information including availability
 
 ### Creating Schedules
 
-1. Navigate to the **📅 Schedules** tab
-2. Click **📅 New Schedule**
+1. Navigate to the **Schedules** tab
+2. Click **New Schedule**
 3. Enter the start date (should be a Monday)
 4. The system automatically creates a week-long schedule (Monday-Sunday)
 5. Select schedules from the dropdown to switch between them
 
 ### Adding Shifts
 
-1. Select a schedule in the **📅 Schedules** tab
-2. Click **⏰ Add Shift**
+1. Select a schedule in the **Schedules** tab
+2. Click **Add Shift**
 3. Enter shift details:
    - Date (must be within schedule range)
    - Start time (24-hour format, e.g., 0900)
@@ -135,7 +135,7 @@ Currently, employees must be assigned to shifts programmatically or through the 
 - Data is stored in `data/scheduling_data.json`
 - Backups are created at `data/scheduling_data.backup.json`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 capstone_scheduling_program/
@@ -159,7 +159,7 @@ capstone_scheduling_program/
     └── settings.json           # VS Code configuration
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ### Object-Oriented Design
 
@@ -205,7 +205,7 @@ capstone_scheduling_program/
   }
   ```
 
-## 🧪 Testing
+## Testing
 
 Run the test suite to verify functionality:
 
@@ -226,7 +226,7 @@ python test_json_complete.py
 python test_persistence.py
 ```
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 - [ ] GUI-based employee-to-shift assignment dialog
@@ -252,7 +252,7 @@ python test_persistence.py
 - [ ] Automated schedule optimization
 - [ ] Integration with payroll systems
 
-## 📊 Business Rules
+## Business Rules
 
 - Employees can only be assigned to shifts during their available hours
 - Employees must have the required role for a shift (or be a manager)
@@ -261,23 +261,23 @@ python test_persistence.py
 - Each shift tracks minimum and maximum staff requirements
 - Unassigned shifts display as "UNASSIGNED" with $0.00 cost
 
-## 👥 Author
+## Author
 
 **Ptolemy Linden**  
 Computer Science Student, California State University, Chico  
 Capstone Project - Fall 2025
 
-## 📝 License
+## License
 
 This project was created as a capstone project for educational purposes.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - California State University, Chico - Computer Science Department
 - Inspired by real-world scheduling challenges in the restaurant industry
 - Sample employee names used for demonstration purposes only
 
-## 📞 Support
+## Support
 
 For questions or issues related to this project, please contact through the repository's issue tracker.
 
