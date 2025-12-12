@@ -56,7 +56,7 @@
       "phone_number": "555-0002",
       "email": "bthompson@unitedhealthcare.org",
       "role": "server",
-      "wage": 7.0,
+      "wage": 7.25,
       "max_hours": 40,
       "min_hours": false,
       "is_minor": false,
@@ -252,7 +252,7 @@
     },
     {
       "id": 10005,
-      "name": "Waxillim Ladrian",
+      "name": "Waxillium Ladrian",
       "phone_number": "555-0006",
       "email": "wladrian@luigis.com",
       "role": "server",
@@ -404,671 +404,671 @@
   "schedules": [
     {
       "id": 1000,
-      "start_date": "2025-12-01",
-      "end_date": "2025-12-07",
+      "start_date": "2025-12-08",
+      "end_date": "2025-12-14",
       "shifts": [
         {
           "id": 1000,
-          "date": "2025-12-01",
+          "date": "2025-12-08",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10001
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1001,
-          "date": "2025-12-01",
+          "date": "2025-12-08",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1002,
-          "date": "2025-12-01",
+          "date": "2025-12-08",
           "start_time": 1500,
           "end_time": 2100,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10002
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1003,
-          "date": "2025-12-01",
+          "date": "2025-12-08",
           "start_time": 1700,
           "end_time": 2200,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1004,
-          "date": "2025-12-01",
+          "date": "2025-12-08",
           "start_time": 1500,
           "end_time": 2200,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1005,
-          "date": "2025-12-01",
+          "date": "2025-12-08",
           "start_time": 900,
           "end_time": 1800,
           "roles_required": [
             "manager"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10000
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1006,
-          "date": "2025-12-02",
+          "date": "2025-12-09",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10001
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1007,
-          "date": "2025-12-02",
+          "date": "2025-12-09",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1008,
-          "date": "2025-12-02",
+          "date": "2025-12-09",
           "start_time": 1500,
           "end_time": 2100,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10002
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1009,
-          "date": "2025-12-02",
+          "date": "2025-12-09",
           "start_time": 1700,
           "end_time": 2200,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1010,
-          "date": "2025-12-02",
+          "date": "2025-12-09",
           "start_time": 1500,
           "end_time": 2200,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1011,
-          "date": "2025-12-02",
+          "date": "2025-12-09",
           "start_time": 900,
           "end_time": 1800,
           "roles_required": [
             "manager"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10000
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1012,
-          "date": "2025-12-03",
+          "date": "2025-12-10",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10001
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1013,
-          "date": "2025-12-03",
+          "date": "2025-12-10",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1014,
-          "date": "2025-12-03",
+          "date": "2025-12-10",
           "start_time": 1500,
           "end_time": 2100,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10002
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1015,
-          "date": "2025-12-03",
+          "date": "2025-12-10",
           "start_time": 1700,
           "end_time": 2200,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1016,
-          "date": "2025-12-03",
+          "date": "2025-12-10",
           "start_time": 1500,
           "end_time": 2200,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1017,
-          "date": "2025-12-03",
+          "date": "2025-12-10",
           "start_time": 900,
           "end_time": 1800,
           "roles_required": [
             "manager"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10000
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1018,
-          "date": "2025-12-04",
+          "date": "2025-12-11",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10001
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1019,
-          "date": "2025-12-04",
+          "date": "2025-12-11",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1020,
-          "date": "2025-12-04",
+          "date": "2025-12-11",
           "start_time": 1500,
           "end_time": 2100,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10002
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1021,
-          "date": "2025-12-04",
+          "date": "2025-12-11",
           "start_time": 1700,
           "end_time": 2200,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1022,
-          "date": "2025-12-04",
+          "date": "2025-12-11",
           "start_time": 1500,
           "end_time": 2200,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1023,
-          "date": "2025-12-04",
+          "date": "2025-12-11",
           "start_time": 900,
           "end_time": 1800,
           "roles_required": [
             "manager"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10000
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1024,
-          "date": "2025-12-05",
+          "date": "2025-12-12",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10001
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1025,
-          "date": "2025-12-05",
+          "date": "2025-12-12",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10003
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1026,
-          "date": "2025-12-05",
+          "date": "2025-12-12",
           "start_time": 1500,
           "end_time": 2100,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10002
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1027,
-          "date": "2025-12-05",
+          "date": "2025-12-12",
           "start_time": 1700,
           "end_time": 2200,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10005
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1028,
-          "date": "2025-12-05",
+          "date": "2025-12-12",
           "start_time": 1500,
           "end_time": 2200,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10004
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1029,
-          "date": "2025-12-05",
+          "date": "2025-12-12",
           "start_time": 900,
           "end_time": 1800,
           "roles_required": [
             "manager"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [
             10000
           ],
-          "is_filled": true,
+          "is_filled": false,
           "is_published": false
         },
         {
           "id": 1030,
-          "date": "2025-12-06",
+          "date": "2025-12-13",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1031,
-          "date": "2025-12-06",
+          "date": "2025-12-13",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1032,
-          "date": "2025-12-06",
+          "date": "2025-12-13",
           "start_time": 1500,
           "end_time": 2100,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1033,
-          "date": "2025-12-06",
+          "date": "2025-12-13",
           "start_time": 1700,
           "end_time": 2200,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1034,
-          "date": "2025-12-06",
+          "date": "2025-12-13",
           "start_time": 1500,
           "end_time": 2200,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1035,
-          "date": "2025-12-06",
+          "date": "2025-12-13",
           "start_time": 900,
           "end_time": 1800,
           "roles_required": [
             "manager"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1036,
-          "date": "2025-12-07",
+          "date": "2025-12-14",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1037,
-          "date": "2025-12-07",
+          "date": "2025-12-14",
           "start_time": 1000,
           "end_time": 1500,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1038,
-          "date": "2025-12-07",
+          "date": "2025-12-14",
           "start_time": 1500,
           "end_time": 2100,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1039,
-          "date": "2025-12-07",
+          "date": "2025-12-14",
           "start_time": 1700,
           "end_time": 2200,
           "roles_required": [
             "server"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1040,
-          "date": "2025-12-07",
+          "date": "2025-12-14",
           "start_time": 1500,
           "end_time": 2200,
           "roles_required": [
             "cook"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
         },
         {
           "id": 1041,
-          "date": "2025-12-07",
+          "date": "2025-12-14",
           "start_time": 900,
           "end_time": 1800,
           "roles_required": [
             "manager"
           ],
           "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
+          "min_staff": 3,
+          "max_staff": 20,
           "assigned_employees": [],
           "is_filled": false,
           "is_published": false
@@ -1078,7 +1078,7 @@
   ],
   "metadata": {
     "version": "1.0",
-    "last_saved": "2025-12-05T23:28:33.703667",
+    "last_saved": "2025-12-12T03:56:53.621857",
     "employee_count": 8,
     "schedule_count": 1,
     "next_employee_id": 10008,

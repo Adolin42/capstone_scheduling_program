@@ -6,7 +6,9 @@ Description: Professional scheduling software with Tkinter GUI
 
 import tkinter as tk # basic Tkinter widgets (Label, Button, etc.)
 from tkinter import ttk, messagebox, simpledialog # themed widgets (sexy, sleek, modern widgets)
+import calendar
 from datetime import datetime, date, timedelta
+from functools import partial
 import json
 import os
 
@@ -154,7 +156,7 @@ class SchedulingApp:
             self.employee_tree.heading(col, text=col)
             self.employee_tree.column(col, width=100)
         
-        # Scrollbars
+        # Scrollbars🚮
         emp_v_scroll = ttk.Scrollbar(tree_frame, orient='vertical', command=self.employee_tree.yview)
         emp_h_scroll = ttk.Scrollbar(tree_frame, orient='horizontal', command=self.employee_tree.xview)
         self.employee_tree.config(yscrollcommand=emp_v_scroll.set, xscrollcommand=emp_h_scroll.set)
@@ -282,7 +284,7 @@ class SchedulingApp:
                   command=self.edit_selected_shift).pack(side='left', padx=5)
         ttk.Button(shift_actions_frame, text="👤 Assign Employee", 
                   command=self.assign_employee_to_shift).pack(side='left', padx=5)
-        ttk.Button(shift_actions_frame, text="🗑️Delete Shift", 
+        ttk.Button(shift_actions_frame, text="🗑️ Delete Shift", 
                   command=self.delete_selected_shift).pack(side='left', padx=5)
 
     def create_status_bar(self):
@@ -423,16 +425,18 @@ class SchedulingApp:
 
     def create_new_schedule(self):
         """Create new weekly schedule"""
-        # Get start date
-        start_date_str = simpledialog.askstring("New Schedule", 
-                                               "Enter start date (YYYY-MM-DD, should be Monday):")
-        if not start_date_str:
+        # Show calendar dialog to get start date
+        dialog = CalendarDialog(self.root)
+        print(f"Dialog result: {dialog.result}")  # Debug
+        if not dialog.result:
+            print("No date selected, returning")  # Debug
             return
         
         try:
-            start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+            start_date = dialog.result
             end_date = start_date + timedelta(days=6)  # Sunday
             
+            print(f"Creating schedule from {start_date} to {end_date}")  # Debug
             schedule = Schedule(start_date, end_date)
             self.schedules.append(schedule)
             self.current_schedule = schedule
@@ -442,6 +446,7 @@ class SchedulingApp:
             self.add_activity(f"Created schedule: {start_date} to {end_date}")
             self.status_var.set(f"New schedule created for week of {start_date}")
             self.save_data()
+            print("Schedule created successfully")  # Debug
             
         except ValueError as e:
             messagebox.showerror("Error", f"Invalid date format: {str(e)}")
@@ -507,7 +512,18 @@ class SchedulingApp:
                     assigned_names.append(emp.name)
             
             assigned_str = ", ".join(assigned_names) if assigned_names else "UNASSIGNED"
-            status = "✅ Filled" if shift.is_filled else "❌ Need Staff"
+            
+            # Update filled status before checking
+            shift.update_filled_status(self.employees)
+            
+            # Check which roles are missing
+            missing_roles = shift.get_missing_roles(self.employees)
+            if shift.is_filled:
+                status = "✅ Filled"
+            elif missing_roles:
+                status = f"❌ Need: {', '.join(missing_roles)}"
+            else:
+                status = "❌ Need Staff"
             
             time_str = f"{shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)}"
 
@@ -548,7 +564,18 @@ class SchedulingApp:
                         assigned_names.append(emp.name)
                 
                 assigned_str = ", ".join(assigned_names) if assigned_names else "UNASSIGNED"
-                status = "✅ Filled" if shift.is_filled else "❌ Unfilled"
+                
+                # Update filled status before checking
+                shift.update_filled_status(self.employees)
+                
+                # Check which roles are missing
+                missing_roles = shift.get_missing_roles(self.employees)
+                if shift.is_filled:
+                    status = "✅ Filled"
+                elif missing_roles:
+                    status = f"❌ Need: {', '.join(missing_roles)}"
+                else:
+                    status = "❌ Unfilled"
 
                 # Format time
                 time_str = f"{shift.format_time(shift.start_time)}-{shift.format_time(shift.end_time)}"
@@ -688,6 +715,14 @@ class SchedulingApp:
                 # Assign cooks
                 morning_cook.assign_employee(tony)
                 evening_cook.assign_employee(carmela)
+                
+                # Update filled status for all shifts
+                manager_shift.update_filled_status(self.employees)
+                morning_server.update_filled_status(self.employees)
+                evening_server1.update_filled_status(self.employees)
+                evening_server2.update_filled_status(self.employees)
+                morning_cook.update_filled_status(self.employees)
+                evening_cook.update_filled_status(self.employees)
                 
             except Exception as e:
                 print(f"Warning: Could not assign employee to shift: {e}")
@@ -1088,6 +1123,180 @@ class EmployeeDetailsDialog:
         # Close button
         ttk.Button(main_frame, text="Close", command=self.dialog.destroy).pack(pady=10)
 
+class CalendarDialog:
+    def __init__(self, parent):
+        self.result = None
+        
+        # Create dialog
+        self.dialog = tk.Toplevel(parent)
+        self.dialog.title("Select Schedule Start Date")
+        self.dialog.geometry("350x400")
+        self.dialog.transient(parent)
+        self.dialog.grab_set()
+        
+        # Center dialog
+        self.dialog.geometry("+%d+%d" % (parent.winfo_rootx() + 50, parent.winfo_rooty() + 50))
+        
+        # Create content
+        main_frame = ttk.Frame(self.dialog, padding=20)
+        main_frame.pack(fill='both', expand=True)
+        
+        # Instructions
+        ttk.Label(main_frame, text="Select a Monday for the schedule start date:",
+                 font=('Arial', 10, 'bold')).pack(pady=(0, 10))
+        
+        # Current date
+        self.current_date = date.today()
+        self.selected_date = None
+        
+        # Month/Year selector
+        nav_frame = ttk.Frame(main_frame)
+        nav_frame.pack(pady=5)
+        
+        ttk.Button(nav_frame, text="<", width=3, 
+                  command=self.prev_month).pack(side='left', padx=5)
+        
+        self.month_year_var = tk.StringVar()
+        self.update_month_year_label()
+        ttk.Label(nav_frame, textvariable=self.month_year_var,
+                 font=('Arial', 12, 'bold'), width=20).pack(side='left')
+        
+        ttk.Button(nav_frame, text=">", width=3,
+                  command=self.next_month).pack(side='left', padx=5)
+        
+        # Calendar frame
+        cal_frame = ttk.Frame(main_frame)
+        cal_frame.pack(fill='both', expand=True, pady=10)
+        
+        # Day headers
+        days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        for col, day in enumerate(days):
+            ttk.Label(cal_frame, text=day, font=('Arial', 9, 'bold'),
+                     width=5).grid(row=0, column=col, padx=2, pady=2)
+        
+        # Calendar buttons (will be populated)
+        self.day_buttons = []
+        for row in range(6):
+            week_buttons = []
+            for col in range(7):
+                btn = tk.Button(cal_frame, text="", width=4, height=2,
+                              relief='raised', bg='white')
+                btn.grid(row=row+1, column=col, padx=2, pady=2)
+                week_buttons.append(btn)
+            self.day_buttons.append(week_buttons)
+        
+        self.populate_calendar()
+        
+        # Selected date display
+        self.selected_label_var = tk.StringVar(value="No date selected")
+        ttk.Label(main_frame, textvariable=self.selected_label_var,
+                 font=('Arial', 10)).pack(pady=5)
+        
+        # Buttons
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(pady=10)
+        
+        ttk.Button(button_frame, text="Confirm", width=12,
+                  command=self.confirm_date).pack(side='left', padx=5)
+        ttk.Button(button_frame, text="Cancel", width=12,
+                  command=self.dialog.destroy).pack(side='left', padx=5)
+        
+        self.dialog.wait_window()
+    
+    def update_month_year_label(self):
+        """Update the month/year label"""
+        self.month_year_var.set(f"{self.current_date.strftime('%B %Y')}")
+    
+    def prev_month(self):
+        """Go to previous month"""
+        year = self.current_date.year
+        month = self.current_date.month - 1
+        if month < 1:
+            month = 12
+            year -= 1
+        self.current_date = self.current_date.replace(year=year, month=month, day=1)
+        self.update_month_year_label()
+        self.populate_calendar()
+    
+    def next_month(self):
+        """Go to next month"""
+        year = self.current_date.year
+        month = self.current_date.month + 1
+        if month > 12:
+            month = 1
+            year += 1
+        self.current_date = self.current_date.replace(year=year, month=month, day=1)
+        self.update_month_year_label()
+        self.populate_calendar()
+    
+    def populate_calendar(self):
+        """Populate calendar with days of the month"""
+        year = self.current_date.year
+        month = self.current_date.month
+        
+        # Get calendar for the month
+        cal = calendar.monthcalendar(year, month)
+        
+        # Clear all buttons
+        for week in self.day_buttons:
+            for btn in week:
+                btn.config(text="", state='disabled', bg='white')
+        
+        # Populate with days
+        for week_idx, week in enumerate(cal):
+            for day_idx, day in enumerate(week):
+                if day == 0:
+                    continue
+                
+                btn = self.day_buttons[week_idx][day_idx]
+                btn.config(text=str(day), state='normal')
+                
+                # Create date object for this day
+                day_date = date(year, month, day)
+                
+                # Check if it's a Monday
+                if day_date.weekday() == 0:  # Monday
+                    btn.config(bg='lightblue')
+                else:
+                    btn.config(bg='lightgray')
+                
+                # Bind click event using partial
+                btn.config(command=partial(self.select_date, day_date))
+    
+    def select_date(self, selected_date):
+        """Handle date selection"""
+        print(f"Date clicked: {selected_date}, weekday: {selected_date.weekday()}")  # Debug
+        if selected_date.weekday() != 0:  # Not Monday
+            messagebox.showwarning("Invalid Selection", 
+                                 "Please select a Monday as the schedule start date.")
+            return
+        
+        self.selected_date = selected_date
+        self.selected_label_var.set(f"Selected: {selected_date.strftime('%A, %B %d, %Y')}")
+        
+        # Highlight the selected button
+        self.populate_calendar()  # Refresh calendar to clear previous selection
+        # Find and highlight the selected button
+        for week in self.day_buttons:
+            for btn in week:
+                if btn['text'] and btn['state'] == 'normal':
+                    btn_day = int(btn['text'])
+                    btn_date = date(self.current_date.year, self.current_date.month, btn_day)
+                    if btn_date == selected_date:
+                        btn.config(bg='green', fg='white')  # Highlight selected date
+                        break
+    
+    def confirm_date(self):
+        """Confirm the selected date"""
+        print(f"Confirm clicked, selected_date: {self.selected_date}")  # Debug
+        if not self.selected_date:
+            messagebox.showwarning("No Selection", "Please select a date first.")
+            return
+        
+        self.result = self.selected_date
+        print(f"Result set to: {self.result}")  # Debug
+        self.dialog.destroy()
+
 class AssignEmployeeDialog:
     def __init__(self, parent, shift, employees):
         self.result = None
@@ -1171,9 +1380,9 @@ class AssignEmployeeDialog:
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(pady=10)
 
-        ttk.Button(button_frame, text="Assign Selected",
+        ttk.Button(button_frame, text="Assign Selected", width=15,
                    command=self.assign_employee).pack(side='left', padx=5)
-        ttk.Button(button_frame, text="Cancel",
+        ttk.Button(button_frame, text="Cancel", width=15,
                    command=self.dialog.destroy).pack(side='left', padx=5)
         
         self.dialog.wait_window()
@@ -1197,8 +1406,15 @@ class AssignEmployeeDialog:
         # Assign the employee
         try:
             self.shift.assign_employee(employee)
+            # Import to get employees list - dialog was passed self.employees
+            from modules.shift import Shift
+            # Update filled status based on role requirements (employees already available)
+            # Note: self.employees is the list passed to __init__
+            parent_employees = [emp for emp in self.employees]  # Already have this
+            self.shift.update_filled_status(parent_employees)
             self.result = employee
-            messagebox.showinfo(f"{employee.name} assign to shift successfully!")
+            messagebox.showinfo("Success", f"{employee.name} assigned to shift successfully!")
+            self.dialog.destroy()
         except ValueError as e:
             messagebox.showerror("Assignment Failed", str(e))
 

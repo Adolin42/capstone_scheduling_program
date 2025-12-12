@@ -4,7 +4,7 @@ class Shift:
     # Class variable to track the next shift ID
     _next_id = 1000
     
-    def __init__(self, date, start_time, end_time, roles_required, location="Main", min_staff=1, max_staff=1):
+    def __init__(self, date, start_time, end_time, roles_required, location="Main", min_staff=3, max_staff=20):
         """
         Initialize a new Shift
         
@@ -79,10 +79,63 @@ class Shift:
         # Assign the employee
         self.assigned_employees.append(employee.id)
         
-        # Update filled status
-        self.is_filled = len(self.assigned_employees) >= self.min_staff
+        # Note: Call update_filled_status() after assignment to update filled status
         
         return True
+    
+    def get_missing_roles(self, employees_list):
+        """
+        Check which required roles are missing from assigned employees
+        
+        Args:
+            employees_list (list): List of all Employee objects
+            
+        Returns:
+            list: List of roles that still need to be filled
+        """
+        if not self.roles_required:
+            return []
+        
+        # Get roles of all assigned employees
+        assigned_roles = set()
+        for emp_id in self.assigned_employees:
+            emp = next((e for e in employees_list if e.id == emp_id), None)
+            if emp:
+                assigned_roles.add(emp.role.lower())
+                # Managers count as all roles
+                if emp.is_manager:
+                    return []
+        
+        # Find missing roles
+        missing = []
+        for required_role in self.roles_required:
+            if required_role.lower() not in assigned_roles:
+                missing.append(required_role)
+        
+        return missing
+    
+    def check_role_requirements(self, employees_list):
+        """
+        Check if all required roles are covered
+        
+        Args:
+            employees_list (list): List of all Employee objects
+            
+        Returns:
+            bool: True if all required roles are covered, False otherwise
+        """
+        return len(self.get_missing_roles(employees_list)) == 0
+    
+    def update_filled_status(self, employees_list):
+        """
+        Update the is_filled status based on min_staff AND role requirements
+        
+        Args:
+            employees_list (list): List of all Employee objects
+        """
+        has_enough_staff = len(self.assigned_employees) >= self.min_staff
+        has_all_roles = self.check_role_requirements(employees_list)
+        self.is_filled = has_enough_staff and has_all_roles
     
     def remove_employee(self, employee_id):
         """
@@ -96,7 +149,7 @@ class Shift:
         """
         if employee_id in self.assigned_employees:
             self.assigned_employees.remove(employee_id)
-            self.is_filled = len(self.assigned_employees) >= self.min_staff
+            # Note: filled status should be updated by calling update_filled_status() with employee list
             return True
         return False
     
