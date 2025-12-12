@@ -1,53 +1,69 @@
 {
   "employees": [
     {
-      "id": 10000,
-      "name": "Test Employee 1",
-      "phone_number": "555-0001",
-      "email": "test1@email.com",
-      "role": "server",
-      "wage": 16.0,
-      "max_hours": 40,
-      "min_hours": 0,
-      "is_minor": false,
-      "is_manager": false,
-      "is_admin": false,
-      "available_days_times": [
-        [
-          "Monday",
-          900,
-          1700
-        ]
-      ]
-    },
-    {
-      "id": 10001,
-      "name": "Test Employee 2",
-      "phone_number": "555-0002",
-      "email": "test2@email.com",
-      "role": "cook",
-      "wage": 18.5,
-      "max_hours": 40,
-      "min_hours": 0,
-      "is_minor": false,
-      "is_manager": false,
-      "is_admin": false,
-      "available_days_times": [
-        [
-          "Tuesday",
-          1000,
-          1800
-        ]
-      ]
-    },
-    {
-      "id": 10002,
-      "name": "Test Employee 3",
-      "phone_number": "555-1030",
-      "email": "test3@luigis.com",
+      "id": 10003,
+      "name": "Luigi Mangione",
+      "phone_number": "(530) 123-456",
+      "email": "lmangione@luigis.com",
       "role": "manager",
-      "wage": 20.0,
+      "wage": 35.0,
+      "max_hours": 60,
+      "min_hours": 0,
+      "is_minor": false,
+      "is_manager": true,
+      "is_admin": false,
+      "available_days_times": []
+    },
+    {
+      "id": 10004,
+      "name": "Brian Thompson",
+      "phone_number": "(530) 234-5678",
+      "email": "bthompson@unitedhealthcare.org",
+      "role": "server",
+      "wage": 7.0,
+      "max_hours": 80,
+      "min_hours": 0,
+      "is_minor": false,
+      "is_manager": false,
+      "is_admin": false,
+      "available_days_times": []
+    },
+    {
+      "id": 10005,
+      "name": "Shane van Boening",
+      "phone_number": "(530) 134 -9876",
+      "email": "svg@luigis.com",
+      "role": "cook",
+      "wage": 18.0,
       "max_hours": 40,
+      "min_hours": 0,
+      "is_minor": false,
+      "is_manager": false,
+      "is_admin": false,
+      "available_days_times": []
+    },
+    {
+      "id": 10006,
+      "name": "Sou Xiong",
+      "phone_number": "(530) 987-1776",
+      "email": "sxiong@luigis.com",
+      "role": "host",
+      "wage": 16.0,
+      "max_hours": 25,
+      "min_hours": 0,
+      "is_minor": false,
+      "is_manager": false,
+      "is_admin": false,
+      "available_days_times": []
+    },
+    {
+      "id": 10007,
+      "name": "Robert Robertson",
+      "phone_number": "(530) 876-9954",
+      "email": "rrobertson@luigis.com",
+      "role": "assistant manager",
+      "wage": 25.0,
+      "max_hours": 50,
       "min_hours": 0,
       "is_minor": false,
       "is_manager": true,
@@ -57,32 +73,17 @@
   ],
   "schedules": [
     {
-      "id": 1002,
-      "start_date": "2025-12-01",
-      "end_date": "2025-12-07",
+      "id": 1003,
+      "start_date": "2025-12-08",
+      "end_date": "2025-12-14",
       "shifts": [
         {
-          "id": 1003,
-          "date": "2025-12-01",
+          "id": 1005,
+          "date": "2025-12-08",
           "start_time": 900,
           "end_time": 1700,
           "roles_required": [
-            "server"
-          ],
-          "location": "Main",
-          "min_staff": 1,
-          "max_staff": 1,
-          "assigned_employees": [],
-          "is_filled": false,
-          "is_published": false
-        },
-        {
-          "id": 1004,
-          "date": "2025-12-01",
-          "start_time": 900,
-          "end_time": 1700,
-          "roles_required": [
-            "server"
+            "manager"
           ],
           "location": "Main",
           "min_staff": 1,
@@ -96,11 +97,11 @@
   ],
   "metadata": {
     "version": "1.0",
-    "last_saved": "2025-12-01T21:16:22.355778",
-    "employee_count": 3,
+    "last_saved": "2025-12-05T22:54:54.759326",
+    "employee_count": 5,
     "schedule_count": 1,
-    "next_employee_id": 10003,
-    "next_shift_id": 1005,
-    "next_schedule_id": 1003
+    "next_employee_id": 10008,
+    "next_shift_id": 1006,
+    "next_schedule_id": 1004
   }
 }

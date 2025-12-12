@@ -831,8 +831,46 @@ class SchedulingApp:
 
     def assign_employee_to_shift(self):
         """Assign employee to selected shift"""
-        messagebox.showinfo("Coming Soon", "Employee assignment dialog will be implemented in next version")
+        # Get selected shift from the shifts tab
+        selection = self.shifts_tree.selection()
+        if not selection:
+            messagebox.showwarning("No Selection", "Please select a shift to assign an employee")
+            return
+        # Get shift data from tree
+        item = self.shifts_tree.item(selection[0])
+        shift_id = int(item['values'][0])
 
+        # Find the shift object
+        shift = None
+        for schedule in self.schedules:
+            for s in schedule.get_all_shifts():
+                if s.id == shift_id:
+                    shift = s
+                    break
+            if shift:
+                break
+
+        if not shift:
+            messagebox.showerror("Error", "Shift not found")
+            return
+        
+        # Check if shift is full
+        if len(shift.assigned_employees) >= shift.max_staff:
+            messagebox.showwarning("Shift Full", "This shift is already fully staffed")
+            return
+        
+        # Show assignment dialog
+        dialog = AssignEmployeeDialog(self.root, shift, self.employees)
+
+        # If assignment was successful, refresh displays
+        if dialog.result:
+            self.refresh_schedule_view()
+            self.refresh_shifts_tab()
+            self.add_activity(f"Assigned {dialog.result.name} to shift {shift_id}")
+            self.status_var.set(f"Employee assigned successfully")
+            self.save_data()
+
+    
     def delete_selected_shift(self):
         """Delete selected shift"""
         messagebox.showinfo("Coming Soon", "Shift deletion will be implemented in next version")
@@ -1050,6 +1088,121 @@ class EmployeeDetailsDialog:
         
         # Close button
         ttk.Button(main_frame, text="Close", command=self.dialog.destroy).pack(pady=10)
+
+class AssignEmployeeDialog:
+    def __init__(self, parent, shift, employees):
+        self.result = None
+        self.shift = shift
+        self.employees = employees
+
+        # Create dialog
+        self.dialog = tk.Toplevel(parent)
+        self.dialog.title(f"Assign Employee to Shift")
+        self.dialog.geometry("500x450")
+        self.dialog.transient(parent)
+        self.dialog.grab_set()
+
+        # Center dialog
+        self.dialog.geometry("+%d+%d" % (parent.winfo_rootx() + 50, parent.winfo_rooty() + 50))
+
+        # Create content
+        main_frame = ttk.Frame(self.dialog, padding=20)
+        main_frame.pack(fill='both', expand=True)
+
+        # Shift information
+        info_frame = ttk.LabelFrame(main_frame, text="Shift Information", padding=10)
+        info_frame.pack(fill='x', pady=5)
+
+        ttk.Label(info_frame, text=f"Date: {shift.date} ({shift.get_day_name()})").pack(anchor='w')
+        ttk.Label(info_frame, text=f"Time: {shift.format_time(shift.start_time)} - {shift.format_time(shift.end_time)}").pack(anchor='w')
+        ttk.Label(info_frame, text=f"Duration: {shift.get_duration_hours():.1f} hours").pack(anchor='w')
+        ttk.Label(info_frame, text=f"Role Required: {shift.roles_required[0] if shift.roles_required else 'Any'}").pack(anchor='w')
+        ttk.Label(info_frame, text=f"Currently Assigned: {len(shift.assigned_employees)}/{shift.max_staff}").pack(anchor='w')
+
+        # Employee selection
+        select_frame = ttk.LabelFrame(main_frame, text="Select Employee to Assign", padding=10)
+        select_frame.pack(fill='both', expand=True, pady=5)
+
+        # Create listbox with scrollbar
+        list_container = ttk.Frame(select_frame)
+        list_container.pack(fill='both', expand=True)
+
+        scrollbar = ttk.Scrollbar(list_container, orient='vertical')
+        self.employee_listbox = tk.Listbox(list_container, yscrollcommand=scrollbar.set, height=10)
+        scrollbar.config(command=self.employee_listbox.yview)
+
+        self.employee_listbox.pack(side='left', fill='both', expand=True)
+        scrollbar.pack(side='right', fill='y')
+
+        # Populate employee list with availability info
+        self.eligible_employees = []
+        day_name = shift.get_day_name()
+
+        for emp in employees:
+            # Check if already assigned
+            if emp.id in shift.assigned_employees:
+                continue
+            
+            # Check role match
+            role_match = emp.role.lower() in [r.lower() for r in shift.roles_required] or emp.is_manager
+
+            # Check availability
+            is_available = emp.is_available(day_name, shift.start_time, shift.end_time)
+
+            # Build display string
+            status = ""
+            if not role_match:
+                status = " [WRONG ROLE]"
+            elif not is_available:
+                status = " [NOT AVAILABLE]"
+            else:
+                status = " ✅"
+            
+            display = f"{emp.name} ({emp.role}, ${emp.wage:.2f}/hr){status}"
+            self.employee_listbox.insert(tk.END, display)
+            self.eligible_employees.append((emp, role_match and is_available))
+
+        # Info label
+        info_label = ttk.Label(select_frame,
+                               text = "✅ = Can be assigned | Select Employee and click Assign",
+                               font = ('Arial', 9, 'italic'))
+        info_label.pack(pady=5)
+
+        # Buttons
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(pady=10)
+
+        ttk.Button(button_frame, text="Assign Selected",
+                   command=self.assign_employee).pack(side='left', padx=5)
+        ttk.Button(button_frame, text="Cancel",
+                   command=self.dialog.destroy).pack(side='left', padx=5)
+        
+        self.dialog.wait_window()
+
+    def assign_employee(self):
+        """Assign the selected employee to the shift"""
+        selection = self.employee_listbox.curselection()
+        if not selection:
+            messagebox.showwarning("No Selection", "Please select an employee to assign")
+            return
+        
+        index = selection[0]
+        employee, is_eligible = self.eligible_employees[index]
+
+        if not is_eligible:
+            messagebox.showerror("Cannot Assign",
+                                 f"{employee.name} cannot be assigned to this shift.\n\n"
+                                 f"Reason: Employee is either not available or doesn't have the required role.")
+            return
+        
+        # Assign the employee
+        try:
+            self.shift.assign_employee(employee)
+            self.result = employee
+            messagebox.showinfo(f"{employee.name} assign to shift successfully!")
+        except ValueError as e:
+            messagebox.showerror("Assignment Failed", str(e))
+
 
 
 def main():
