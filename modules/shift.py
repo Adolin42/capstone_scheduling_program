@@ -4,7 +4,7 @@ class Shift:
     # Class variable to track the next shift ID
     _next_id = 1000
     
-    def __init__(self, date, start_time, end_time, roles_required, location="Main", min_staff=3, max_staff=20):
+    def __init__(self, date, start_time, end_time, roles_required, location="Main", min_staff=1, max_staff=1):
         """
         Initialize a new Shift
         

@@ -43,7 +43,7 @@ class SchedulingApp:
         
         # Load sample data if no data exists
         if not self.employees:
-            self.load_sample_data()
+            self.load_sample_data_advanced()
 
     def setup_styles(self):
         """Configure ttk styles for a professional look"""
@@ -316,6 +316,11 @@ class SchedulingApp:
                     max_hours=int(emp_data['max_hours']),
                     is_minor=emp_data['is_minor']
                 )
+                
+                # Add availability slots
+                for day, start_time, end_time in emp_data.get('availability', []):
+                    employee.add_availability(day, start_time, end_time)
+                
                 self.employees.append(employee)
                 self.refresh_employee_list()
                 self.update_stats()
@@ -355,6 +360,11 @@ class SchedulingApp:
                 employee.wage = float(emp_data['wage'])
                 employee.max_hours = int(emp_data['max_hours'])
                 employee.is_minor = emp_data['is_minor']
+                
+                # Update availability - clear old and add new
+                employee.available_days_times = []
+                for day, start_time, end_time in emp_data.get('availability', []):
+                    employee.add_availability(day, start_time, end_time)
                 
                 self.refresh_employee_list()
                 self.add_activity(f"Updated employee: {employee.name}")
@@ -746,6 +756,181 @@ class SchedulingApp:
         self.update_stats()
         self.add_activity("Loaded sample data with schedules and shifts")
 
+    def load_sample_data_advanced(self):
+        """Load advanced sample data showcasing multiple features for presentation"""
+        # Create sample employees with varied availabilities
+        sample_employees = [
+            ("Luigi Mangione", "555-0001", "lmangione@luigis.com", "manager", 35.00, 50, False),
+            ("Brian Thompson", "555-0002", "bthompson@unitedhealthcare.org", "server", 7.25, 40, False),
+            ("Shane van Boening", "555-0003", "shane@luigis.com", "server", 15.50, 40, False),
+            ("Dalinar Kholin", "555-0004", "dkholin@luigis.com", "cook", 22.00, 40, False),
+            ("Ciaphas Cain", "555-0005", "ccain@luigis.com", "cook", 20.50, 40, False),
+            ("Waxillium Ladrian", "555-0006", "wladrian@luigis.com", "server", 30, 35, False),
+            ("Ellen Ripley", "555-0007", "eripley@luigis.com", "host", 16.50, 30, False),
+            ("Chad Thunderstud", "555-0008", "cthunderstud@luigis.com", "assistant manager", 28.00, 45, False),
+        ]
+        
+        for emp_data in sample_employees:
+            employee = Employee(*emp_data)
+            
+            # Varied availabilities to showcase the feature
+            if employee.role == "manager":
+                # Manager available all week
+                employee.add_availability("Monday", 800, 2100)
+                employee.add_availability("Tuesday", 800, 2100)
+                employee.add_availability("Wednesday", 800, 2100)
+                employee.add_availability("Thursday", 800, 2100)
+                employee.add_availability("Friday", 800, 2200)
+                employee.add_availability("Saturday", 900, 2200)
+                employee.add_availability("Sunday", 1000, 2000)
+            elif employee.name == "Brian Thompson":
+                # Limited availability - not available Sunday
+                employee.add_availability("Monday", 900, 2100)
+                employee.add_availability("Tuesday", 900, 2100)
+                employee.add_availability("Wednesday", 900, 2100)
+                employee.add_availability("Thursday", 900, 2100)
+                employee.add_availability("Friday", 900, 2200)
+                employee.add_availability("Saturday", 1000, 2200)
+            elif employee.name == "Ellen Ripley":
+                # Host - limited hours, weekends only
+                employee.add_availability("Friday", 1700, 2200)
+                employee.add_availability("Saturday", 1000, 2200)
+                employee.add_availability("Sunday", 1100, 2000)
+            else:
+                # Most employees available full time
+                employee.add_availability("Monday", 900, 2100)
+                employee.add_availability("Tuesday", 900, 2100)
+                employee.add_availability("Wednesday", 900, 2100)
+                employee.add_availability("Thursday", 900, 2100)
+                employee.add_availability("Friday", 900, 2200)
+                employee.add_availability("Saturday", 1000, 2200)
+                employee.add_availability("Sunday", 1100, 2000)
+            
+            self.employees.append(employee)
+        
+        # Create sample schedules with shifts
+        from datetime import date, timedelta
+        
+        # Create current week schedule
+        today = date.today()
+        # Find the Monday of current week
+        days_since_monday = today.weekday()
+        monday = today - timedelta(days=days_since_monday)
+        sunday = monday + timedelta(days=6)
+        
+        schedule1 = Schedule(monday, sunday)
+        
+        # Add shifts for each day of the week with varied staffing levels
+        days_data = [
+            (monday, "Monday"),
+            (monday + timedelta(days=1), "Tuesday"),
+            (monday + timedelta(days=2), "Wednesday"),
+            (monday + timedelta(days=3), "Thursday"),
+            (monday + timedelta(days=4), "Friday"),
+            (monday + timedelta(days=5), "Saturday"),
+            (monday + timedelta(days=6), "Sunday")
+        ]
+        
+        luigi = self.employees[0]  # Luigi - Manager
+        brian = self.employees[1]  # Brian - Server
+        shane = self.employees[2]  # Shane - Server
+        dalinar = self.employees[3]  # Dalinar - Cook
+        ciaphas = self.employees[4]  # Ciaphas - Cook
+        waxillium = self.employees[5]  # Waxillium - Server
+        ellen = self.employees[6]  # Ellen - Host
+        chad = self.employees[7]  # Chad - Assistant Manager
+        
+        for shift_date, day_name in days_data:
+            # Morning shifts
+            morning_server = Shift(shift_date, 1000, 1500, ["server"])
+            morning_cook = Shift(shift_date, 1000, 1500, ["cook"])
+            morning_host = Shift(shift_date, 1000, 1500, ["host"])
+            
+            # Afternoon/Evening shifts
+            evening_server1 = Shift(shift_date, 1500, 2100, ["server"])
+            evening_server2 = Shift(shift_date, 1700, 2200, ["server"])
+            evening_cook = Shift(shift_date, 1500, 2200, ["cook"])
+            
+            # Manager/Lead shifts
+            manager_shift = Shift(shift_date, 900, 1800, ["manager"])
+            lead_shift = Shift(shift_date, 1800, 2200, ["manager", "assistant manager"])
+            
+            try:
+                # Always assign the manager
+                manager_shift.assign_employee(luigi)
+                
+                # FILLED SHIFTS - Completely staffed
+                if day_name in ["Tuesday", "Thursday"]:
+                    morning_server.assign_employee(brian)
+                    evening_server1.assign_employee(shane)
+                    evening_server2.assign_employee(waxillium)
+                    morning_cook.assign_employee(dalinar)
+                    evening_cook.assign_employee(ciaphas)
+                    lead_shift.assign_employee(chad)
+                
+                # PARTIALLY FILLED - Missing specific roles
+                elif day_name in ["Monday", "Wednesday", "Friday"]:
+                    morning_server.assign_employee(brian)
+                    evening_server1.assign_employee(shane)
+                    # evening_server2 LEFT UNFILLED - needs server
+                    morning_cook.assign_employee(dalinar)
+                    # evening_cook LEFT UNFILLED - needs cook
+                    lead_shift.assign_employee(chad)
+                
+                # UNFILLED SHIFTS - No staff assigned
+                elif day_name == "Saturday":
+                    morning_server.assign_employee(brian)
+                    evening_server1.assign_employee(shane)
+                    # evening_server2 LEFT UNFILLED
+                    morning_cook.assign_employee(dalinar)
+                    # evening_cook LEFT UNFILLED
+                    # lead_shift LEFT UNFILLED - needs manager or assistant manager
+                
+                elif day_name == "Sunday":
+                    # Most staff unavailable - showcase limited staffing
+                    morning_server.assign_employee(shane)
+                    # evening_server1 UNFILLED - Brian not available Sunday
+                    # evening_server2 UNFILLED
+                    morning_cook.assign_employee(ciaphas)
+                    # evening_cook UNFILLED
+                    # lead_shift UNFILLED - Ellen only available after 5 PM but no server then
+                
+                # Update filled status for all shifts
+                morning_server.update_filled_status(self.employees)
+                evening_server1.update_filled_status(self.employees)
+                evening_server2.update_filled_status(self.employees)
+                morning_cook.update_filled_status(self.employees)
+                evening_cook.update_filled_status(self.employees)
+                manager_shift.update_filled_status(self.employees)
+                lead_shift.update_filled_status(self.employees)
+                if day_name not in ["Sunday"]:
+                    morning_host.update_filled_status(self.employees)
+                
+            except Exception as e:
+                print(f"Warning: Could not assign employee to shift: {e}")
+            
+            # Add shifts to schedule
+            schedule1.add_shift(morning_server)
+            schedule1.add_shift(morning_cook)
+            if day_name not in ["Sunday"]:
+                schedule1.add_shift(morning_host)
+            schedule1.add_shift(evening_server1)
+            schedule1.add_shift(evening_server2)
+            schedule1.add_shift(evening_cook)
+            schedule1.add_shift(manager_shift)
+            schedule1.add_shift(lead_shift)
+        
+        self.schedules.append(schedule1)
+        self.current_schedule = schedule1
+        
+        # Refresh all views
+        self.refresh_employee_list()
+        self.refresh_schedule_combo()
+        self.refresh_schedule_view()
+        self.refresh_shifts_tab()
+        self.update_stats()
+        self.add_activity("Loaded advanced sample data with varied shift staffing")
+
     def save_data(self):
         """Save data to JSON file"""
         try:
@@ -924,19 +1109,33 @@ class SchedulingApp:
 class EmployeeDialog:
     def __init__(self, parent, title, employee=None):
         self.result = None
+        self.availability_list = []
         
         # Create dialog window
         self.dialog = tk.Toplevel(parent)
         self.dialog.title(title)
-        self.dialog.geometry("400x350")
+        self.dialog.geometry("500x600")
         self.dialog.transient(parent)
         self.dialog.grab_set()
         
         # Center dialog
         self.dialog.geometry("+%d+%d" % (parent.winfo_rootx() + 50, parent.winfo_rooty() + 50))
         
+        # Create scrollable frame for content
+        canvas = tk.Canvas(self.dialog)
+        scrollbar = ttk.Scrollbar(self.dialog, orient='vertical', command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor='nw')
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
         # Create form
-        main_frame = ttk.Frame(self.dialog, padding=20)
+        main_frame = ttk.Frame(scrollable_frame, padding=20)
         main_frame.pack(fill='both', expand=True)
         
         # Form fields
@@ -970,9 +1169,57 @@ class EmployeeDialog:
         ttk.Checkbutton(main_frame, text="Is Minor (under 18)", 
                        variable=self.is_minor_var).grid(row=6, column=1, pady=5, sticky='w')
         
+        # Availability section
+        ttk.Label(main_frame, text="Availability:", font=('Arial', 10, 'bold')).grid(row=7, column=0, columnspan=2, sticky='w', pady=(10, 5))
+        
+        # Availability inputs
+        avail_input_frame = ttk.Frame(main_frame)
+        avail_input_frame.grid(row=8, column=0, columnspan=2, sticky='ew', pady=5)
+        
+        ttk.Label(avail_input_frame, text="Day:").pack(side='left', padx=5)
+        self.day_var = tk.StringVar(value="Monday")
+        day_combo = ttk.Combobox(avail_input_frame, textvariable=self.day_var, 
+                                values=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                                width=12, state='readonly')
+        day_combo.pack(side='left', padx=5)
+        
+        ttk.Label(avail_input_frame, text="Start (24h):").pack(side='left', padx=5)
+        self.start_time_var = tk.StringVar(value="0900")
+        ttk.Entry(avail_input_frame, textvariable=self.start_time_var, width=6).pack(side='left', padx=5)
+        
+        ttk.Label(avail_input_frame, text="End (24h):").pack(side='left', padx=5)
+        self.end_time_var = tk.StringVar(value="1700")
+        ttk.Entry(avail_input_frame, textvariable=self.end_time_var, width=6).pack(side='left', padx=5)
+        
+        ttk.Button(avail_input_frame, text="Add", width=6, command=self.add_availability).pack(side='left', padx=5)
+        
+        # Availability listbox
+        avail_frame = ttk.Frame(main_frame)
+        avail_frame.grid(row=9, column=0, columnspan=2, sticky='ew', pady=5)
+        
+        ttk.Label(avail_frame, text="Scheduled Availability:").pack(anchor='w')
+        
+        list_frame = ttk.Frame(avail_frame)
+        list_frame.pack(fill='both', expand=True)
+        
+        scrollbar_avail = ttk.Scrollbar(list_frame, orient='vertical')
+        self.availability_listbox = tk.Listbox(list_frame, yscrollcommand=scrollbar_avail.set, height=5)
+        scrollbar_avail.config(command=self.availability_listbox.yview)
+        
+        self.availability_listbox.pack(side='left', fill='both', expand=True)
+        scrollbar_avail.pack(side='right', fill='y')
+        
+        # Populate existing availability
+        if employee and employee.available_days_times:
+            self.availability_list = list(employee.available_days_times)
+            self.refresh_availability_listbox()
+        
+        # Remove availability button
+        ttk.Button(avail_frame, text="Remove Selected", command=self.remove_availability).pack(anchor='w', pady=5)
+        
         # Buttons
         button_frame = ttk.Frame(main_frame)
-        button_frame.grid(row=7, column=0, columnspan=2, pady=20)
+        button_frame.grid(row=10, column=0, columnspan=2, pady=20)
         
         ttk.Button(button_frame, text="Save", command=self.save_employee).pack(side='left', padx=5)
         ttk.Button(button_frame, text="Cancel", command=self.dialog.destroy).pack(side='left', padx=5)
@@ -980,8 +1227,53 @@ class EmployeeDialog:
         # Configure grid weights
         main_frame.columnconfigure(1, weight=1)
         
+        # Pack canvas and scrollbar
+        canvas.pack(side='left', fill='both', expand=True)
+        scrollbar.pack(side='right', fill='y')
+        
         # Wait for dialog to close
         self.dialog.wait_window()
+    
+    def add_availability(self):
+        """Add availability entry"""
+        try:
+            day = self.day_var.get()
+            start_time = int(self.start_time_var.get())
+            end_time = int(self.end_time_var.get())
+            
+            if start_time >= end_time:
+                messagebox.showerror("Error", "Start time must be before end time")
+                return
+            
+            # Check if already exists
+            if (day, start_time, end_time) in self.availability_list:
+                messagebox.showwarning("Duplicate", f"This availability slot already exists")
+                return
+            
+            self.availability_list.append((day, start_time, end_time))
+            self.refresh_availability_listbox()
+            
+        except ValueError:
+            messagebox.showerror("Error", "Please enter valid times in military format (e.g., 0900)")
+    
+    def remove_availability(self):
+        """Remove selected availability entry"""
+        selection = self.availability_listbox.curselection()
+        if not selection:
+            messagebox.showwarning("No Selection", "Please select an availability slot to remove")
+            return
+        
+        index = selection[0]
+        del self.availability_list[index]
+        self.refresh_availability_listbox()
+    
+    def refresh_availability_listbox(self):
+        """Refresh the availability listbox display"""
+        self.availability_listbox.delete(0, tk.END)
+        for day, start, end in sorted(self.availability_list):
+            start_formatted = f"{start//100:02d}:{start%100:02d}"
+            end_formatted = f"{end//100:02d}:{end%100:02d}"
+            self.availability_listbox.insert(tk.END, f"{day}: {start_formatted} - {end_formatted}")
 
     def save_employee(self):
         """Save employee data"""
@@ -993,7 +1285,8 @@ class EmployeeDialog:
                 'role': self.role_var.get().strip(),
                 'wage': self.wage_var.get().strip(),
                 'max_hours': self.max_hours_var.get().strip(),
-                'is_minor': self.is_minor_var.get()
+                'is_minor': self.is_minor_var.get(),
+                'availability': self.availability_list
             }
             
             # Basic validation
